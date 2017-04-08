@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -45,7 +47,18 @@ public class MainActivity extends Activity {
                 .icon(bitmap);
 //在地图上添加Marker，并显示
         marker = (Marker)baiduMap.addOverlay(option);
-        
+
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Button button = new Button(getApplicationContext());
+                button.setBackgroundResource(R.drawable.hint);
+                LatLng location = new LatLng(39.963175,116.400244);
+                InfoWindow minfowindow = new InfoWindow(button ,location,-47);
+                baiduMap.showInfoWindow(minfowindow);
+                return true;
+            }
+        });
 
 
         //定位
@@ -83,14 +96,15 @@ public class MainActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+/*        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);*/
+        return true;
     }
 
 
