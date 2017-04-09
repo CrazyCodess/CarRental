@@ -1,9 +1,10 @@
-package com.hhu.carrental;
+package com.hhu.carrental.main;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -16,6 +17,9 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.hhu.carrental.R;
+
+import static com.baidu.location.h.g.R;
 
 public class MainActivity extends Activity {
 
@@ -29,6 +33,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         //注意该方法要再setContentView方法之前实现
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         mapView=(MapView)findViewById(R.id.bmapView);
