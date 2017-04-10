@@ -13,7 +13,8 @@
             android:id="@+id/slide_btn"
             android:paddingLeft="10dp"
             android:paddingTop="18dp"
-            android:src="@drawable/side_btn"/>
+
+            android:src="@drawable/com_btn"/>
         <TextView
             android:id="@+id/title_bar_name"
             android:layout_width="wrap_content"
@@ -25,10 +26,23 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true" />
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/location_f"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/loc_btn"
+
+        />
+    </RelativeLayout>
 
 </LinearLayout>
