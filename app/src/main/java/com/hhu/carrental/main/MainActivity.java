@@ -1,10 +1,10 @@
 package com.hhu.carrental.main;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.baidu.location.BDLocation;
@@ -24,7 +24,7 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
-import com.slidingmenu.lib.SlidingMenu;
+import com.hhu.carrental.ui.UserInfoActivity;
 
 public class MainActivity extends Activity {
 
@@ -40,7 +40,6 @@ public class MainActivity extends Activity {
     public LocationClient mLocationClient = null;
     boolean isFirstLoc = true;
     private BitmapDescriptor mCurrentMarker;
-    private SlidingMenu slidMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +47,12 @@ public class MainActivity extends Activity {
         SDKInitializer.initialize(getApplicationContext());
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         setContentView(R.layout.activity_main);
-        initmap();
-        location();
+        initmap();//初始化百度地图
+        location();//进行定位
 
     }
 
@@ -107,7 +106,8 @@ public class MainActivity extends Activity {
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(myListenter);
         mLocMode = LocationMode.NORMAL;
-        initSlidingMenu();
+        //initSlidingMenu();
+        initSlide();
         initLocation();
 
     }
@@ -161,7 +161,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void initSlidingMenu(){
+    private void initSlide(){
+        slidebtn = (ImageButton)findViewById(R.id.slide_btn);
+        slidebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+                //slidMenu.toggle();
+            }
+        });
+    }
+/*    private void initSlidingMenu(){
         slidMenu = new SlidingMenu(this);
 
         slidMenu.setMode(SlidingMenu.LEFT);
@@ -171,21 +182,9 @@ public class MainActivity extends Activity {
         slidMenu.setBehindOffsetRes(R.dimen.sliding_menu_offset);// 设置偏离距离
         slidMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);// 全屏模式，全屏滑动都可打开
         slide();
-    }
+    }*/
 
-    /**
-     * 侧边栏操作
-     */
-    private void slide(){
-        slidebtn = (ImageButton)findViewById(R.id.slide_btn);
-        slidebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                slidMenu.toggle();
-            }
-        });
-    }
 
     @Override
     protected void onDestroy() {
