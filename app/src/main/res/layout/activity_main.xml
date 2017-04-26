@@ -14,7 +14,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="18dp"
 
-            android:src="@drawable/com_btn"
+            android:src="@drawable/slidebtn"
             android:layout_alignBottom="@+id/title_bar_name"
             android:layout_alignParentTop="true" />
         <TextView

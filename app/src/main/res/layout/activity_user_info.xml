@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg" >
+    android:background="#2a343b" >
 
     <LinearLayout
         android:id="@+id/logout_layout"
@@ -34,7 +34,7 @@
                 android:layout_marginLeft="8dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
 
             <Button
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/login_hint"
-            android:textColor="#ffb8b8b8"
+            android:textColor="@color/text_white"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -107,7 +107,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/view_msg_layout"
                 android:text="@string/rent_bike"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -131,7 +131,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/img_0"
                 android:text="关于我们"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -155,7 +155,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/img_3"
                 android:text="我的收藏"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -179,7 +179,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/img_4"
                 android:text="个人设置"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
         </RelativeLayout>
         <!--
@@ -218,7 +218,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/img_6"
                 android:text="退出登陆"
-                android:textColor="@color/black_font"
+                android:textColor="@color/text_white"
                 android:textSize="16sp" />
         </RelativeLayout>
 

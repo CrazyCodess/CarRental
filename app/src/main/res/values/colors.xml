@@ -2,5 +2,7 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="base_color_text_white">#ffffff</color>
+    <color name="text_white">#ffffff</color>
     <color name="black_font">#000</color>
+    <color name="light_black">#2a343b</color>
 </resources>
