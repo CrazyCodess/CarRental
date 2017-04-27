@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -35,7 +36,7 @@ public class MainActivity extends Activity {
     BaiduMap baiduMap=null;
     Marker marker = null;
     ImageButton slidebtn = null;
-    ImageButton locbtn = null;
+    ImageView locbtn = null;
     public LocationClient mLocationClient = null;
     boolean isFirstLoc = true;
     private BitmapDescriptor mCurrentMarker;
@@ -92,7 +93,9 @@ public class MainActivity extends Activity {
 
 
     private void initmap(){
-        locbtn = (ImageButton)findViewById(R.id.loc_btn);
+        locbtn = (ImageView)findViewById(R.id.loc_btn);
+        locbtn.setScaleType(ImageView.ScaleType.FIT_START);
+        //locbtn.setAlpha(100);
         mapView=(MapView)findViewById(R.id.bmapView);
         baiduMap = mapView.getMap();
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
