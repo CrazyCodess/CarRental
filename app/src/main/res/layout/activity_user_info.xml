@@ -36,7 +36,7 @@
                 android:paddingTop="10dp"
                 android:textColor="@color/text_white"
                 android:textSize="32sp" />
-
+<!--
             <Button
                 android:id="@+id/login0"
                 android:layout_width="45dp"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape"
                 android:text="注册"
-                android:textSize="10dp" />
+                android:textSize="10dp" />-->
 
         </LinearLayout>
 

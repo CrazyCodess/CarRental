@@ -24,10 +24,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
+import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
-import com.hhu.carrental.util.LoginActivity;
 
-import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 
 public class MainActivity extends Activity {
@@ -55,9 +54,9 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         setContentView(R.layout.activity_main);
-        BmobChat.DEBUG_MODE = true;
+       // BmobChat.DEBUG_MODE = true;
        // BmobChat.getInstance(this).init("67636fb1d0e031952bd2fb8956cfd1b6");
-        BmobChat.getInstance(this).init("bc48a49d18b462fd2114fe71f4f95722");
+        //BmobChat.getInstance(this).init("bc48a49d18b462fd2114fe71f4f95722");
         initmap();//初始化百度地图
         location();//进行定位
 

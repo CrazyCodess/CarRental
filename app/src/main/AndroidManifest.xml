@@ -60,10 +60,10 @@
         </activity>
         <activity android:name=".main.MainActivity" />
         <activity
-            android:name=".util.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.UserInfoActivity" />
-        <activity android:name=".util.RegisterActivity"></activity>
+        <activity android:name=".ui.RegisterActivity"></activity>
     </application>
 
 </manifest>

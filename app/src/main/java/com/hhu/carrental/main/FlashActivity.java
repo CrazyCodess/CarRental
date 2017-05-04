@@ -10,6 +10,8 @@ import com.hhu.carrental.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.bmob.im.BmobChat;
+
 public class FlashActivity extends Activity {
 
     //private static final int GO_LOGIN = 0;
@@ -20,8 +22,8 @@ public class FlashActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_flash);
-        //BmobChat.DEBUG_MODE = true;
-        //BmobChat.getInstance(this).init("67636fb1d0e031952bd2fb8956cfd1b6");
+        BmobChat.DEBUG_MODE = true;
+        BmobChat.getInstance(this).init("67636fb1d0e031952bd2fb8956cfd1b6");
 
 
         timer = new Timer();
