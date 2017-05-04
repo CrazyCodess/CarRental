@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:paddingTop="18dp"
-            android:text="CarRental"
+            android:text="@string/app_name"
             android:textColor="#ffffff"
             android:textSize="20sp" />
     </RelativeLayout>

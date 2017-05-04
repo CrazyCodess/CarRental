@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"  tools:context=".main.MainActivity"
+    android:orientation="vertical"
+    android:background="@drawable/login_bg"
+    android:weightSum="1">
+
+    <EditText
+        android:id = "@+id/bike_type"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/input"
+        android:hint="单车类型"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id = "@+id/rent_time"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/input"
+        android:hint="出租时长"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id = "@+id/bike_telephone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/input"
+        android:hint="手机"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id="@+id/bike_pass"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/input"
+        android:hint="锁密码"
+
+        android:maxLength="11"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id = "@+id/bike_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/input"
+        android:hint="单车描述"
+        android:minLines="4"
+        android:paddingLeft="10dp" />
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/get_location"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="0.50" />
+</LinearLayout>

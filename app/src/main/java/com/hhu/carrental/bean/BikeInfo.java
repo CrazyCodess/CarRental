@@ -15,6 +15,42 @@ public class BikeInfo extends BmobObject {
     private BmobGeoPoint location;//车的位置
     private User user;
     private Boolean isUsed;//是否已被使用
+    private String phoneNumber;
+    private String bikeType;
+    private String bikeDetail;
+    private String rentTime;
+
+    public String getBikeType() {
+        return bikeType;
+    }
+
+    public void setBikeType(String bikeType) {
+        this.bikeType = bikeType;
+    }
+
+    public String getBikeDetail() {
+        return bikeDetail;
+    }
+
+    public void setBikeDetail(String bikeDetail) {
+        this.bikeDetail = bikeDetail;
+    }
+
+    public String getRentTime() {
+        return rentTime;
+    }
+
+    public void setRentTime(String rentTime) {
+        this.rentTime = rentTime;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getUnlockPass() {
         return unlockPass;
