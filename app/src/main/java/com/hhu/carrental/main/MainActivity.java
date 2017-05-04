@@ -25,6 +25,10 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
 import com.hhu.carrental.ui.UserInfoActivity;
+import com.hhu.carrental.util.LoginActivity;
+
+import cn.bmob.im.BmobChat;
+import cn.bmob.im.BmobUserManager;
 
 public class MainActivity extends Activity {
 
@@ -51,8 +55,32 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         setContentView(R.layout.activity_main);
+        BmobChat.DEBUG_MODE = true;
+       // BmobChat.getInstance(this).init("67636fb1d0e031952bd2fb8956cfd1b6");
+        BmobChat.getInstance(this).init("bc48a49d18b462fd2114fe71f4f95722");
         initmap();//初始化百度地图
         location();//进行定位
+
+    }
+
+    private void initmap(){
+        locbtn = (ImageView)findViewById(R.id.loc_btn);
+        locbtn.setScaleType(ImageView.ScaleType.FIT_START);
+        mapView=(MapView)findViewById(R.id.bmapView);
+        baiduMap = mapView.getMap();
+        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+        baiduMap.setTrafficEnabled(false);
+        baiduMap.setIndoorEnable(true);
+        baiduMap.setMyLocationEnabled(true);
+        baiduMap.setBuildingsEnabled(true);
+        baiduMap.setMaxAndMinZoomLevel(3,21);
+        mLocMode = LocationMode.NORMAL;
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.registerLocationListener(myListenter);
+        mLocMode = LocationMode.NORMAL;
+        //initSlidingMenu();
+        initSlide();
+        initLocation();
 
     }
 
@@ -92,27 +120,7 @@ public class MainActivity extends Activity {
     }
 
 
-    private void initmap(){
-        locbtn = (ImageView)findViewById(R.id.loc_btn);
-        locbtn.setScaleType(ImageView.ScaleType.FIT_START);
-        //locbtn.setAlpha(100);
-        mapView=(MapView)findViewById(R.id.bmapView);
-        baiduMap = mapView.getMap();
-        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        baiduMap.setTrafficEnabled(false);
-        baiduMap.setIndoorEnable(true);
-        baiduMap.setMyLocationEnabled(true);
-        baiduMap.setBuildingsEnabled(true);
-        baiduMap.setMaxAndMinZoomLevel(3,21);
-        mLocMode = LocationMode.NORMAL;
-        mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(myListenter);
-        mLocMode = LocationMode.NORMAL;
-        //initSlidingMenu();
-        initSlide();
-        initLocation();
 
-    }
     private void initLocation(){
         //配置定位SDK各配置参数
         LocationClientOption option = new LocationClientOption();
@@ -168,8 +176,14 @@ public class MainActivity extends Activity {
         slidebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
-                startActivity(intent);
+                BmobUserManager userManager = BmobUserManager.getInstance(MainActivity.this);
+                if(userManager.getCurrentUser() != null){
+                    startActivity(new Intent(MainActivity.this,UserInfoActivity.class));
+                }else{
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+/*                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                startActivity(intent);*/
                 //slidMenu.toggle();
             }
         });

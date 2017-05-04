@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hhu.carrental.R;
+import com.hhu.carrental.util.LoginActivity;
 
 public class UserInfoActivity extends Activity {
 
@@ -25,5 +26,19 @@ public class UserInfoActivity extends Activity {
                 finish();
             }
         });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

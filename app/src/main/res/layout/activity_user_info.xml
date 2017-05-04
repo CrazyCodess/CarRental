@@ -35,7 +35,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
 
             <Button
                 android:id="@+id/login0"
@@ -82,7 +82,7 @@
         <RelativeLayout
             android:id="@+id/item_1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center" >
@@ -108,14 +108,14 @@
                 android:layout_toRightOf="@id/view_msg_layout"
                 android:text="@string/rent_bike"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/item_0"
             android:layout_width="match_parent"
             android:layout_marginTop="14dp"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:gravity="center" >
 
             <ImageView
@@ -132,13 +132,13 @@
                 android:layout_toRightOf="@id/img_0"
                 android:text="关于我们"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/item_3"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_marginTop="14dp"
             android:gravity="center" >
 
@@ -156,13 +156,13 @@
                 android:layout_toRightOf="@id/img_3"
                 android:text="我的收藏"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/item_4"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_marginTop="14dp"
             android:gravity="center" >
 
@@ -180,7 +180,7 @@
                 android:layout_toRightOf="@id/img_4"
                 android:text="个人设置"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
         </RelativeLayout>
         <!--
                 <RelativeLayout
@@ -201,7 +201,7 @@
         <RelativeLayout
             android:id="@+id/item_6"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_marginTop="14dp"
             android:gravity="center" >
 
@@ -219,7 +219,7 @@
                 android:layout_toRightOf="@id/img_6"
                 android:text="退出登陆"
                 android:textColor="@color/text_white"
-                android:textSize="16sp" />
+                android:textSize="32sp" />
         </RelativeLayout>
 
 
