@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,11 +72,6 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
         bikePass = (EditText)findViewById(R.id.bike_pass);
         bikeDetail = (EditText)findViewById(R.id.bike_detail);
         rentbtn = (Button)findViewById(R.id.rent_btn);
-        biketype = bikeType.getText().toString();
-        renttime = rentTime.getText().toString();
-        phoneNumber = bikephone.getText().toString();
-        unlockPass = bikePass.getText().toString();
-        bikedetail = bikeDetail.getText().toString();
         mapView=(MapView)findViewById(R.id.loc_bmapView);
         locMap = mapView.getMap();
         locMap.setMyLocationConfigeration(new MyLocationConfiguration(
@@ -97,6 +91,12 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     }
 
     public void onClick(View v){
+
+        biketype = bikeType.getText().toString();
+        renttime = rentTime.getText().toString();
+        phoneNumber = bikephone.getText().toString();
+        unlockPass = bikePass.getText().toString();
+        bikedetail = bikeDetail.getText().toString();
 
         switch (v.getId()){
             case R.id.rent_btn:
@@ -137,17 +137,14 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
         }
         public void onReceivePoi(BDLocation poiLocation) {
         }
-
         public void onConnectHotSpotMessage(String s, int i) {
 
         }
-
     }
 
     public void saveBikeInfo(){
         location = new BmobGeoPoint(longtitude,latitude);
         bikeInfo = new BikeInfo(unlockPass,location,user,phoneNumber,biketype,bikedetail,renttime);
-        Log.e("锁密码锁密码锁密码锁密码","----------"+unlockPass+(bikePass.getText()==null)+"*");
         final ProgressDialog mpd = new ProgressDialog(this);
         mpd.setTitle("请稍后");
         mpd.setMessage("正在上传...");

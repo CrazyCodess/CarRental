@@ -29,4 +29,5 @@
     <string name="cancel">取消</string>
     <string name="rent_bike">出租单车</string>
     <string name="rent">出租</string>
+    <string name="hire">租用</string>
 </resources>

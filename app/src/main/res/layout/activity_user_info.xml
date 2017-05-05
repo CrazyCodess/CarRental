@@ -61,6 +61,24 @@
             android:drawableRight="@drawable/right_click"
             android:paddingLeft="5dp"
             android:textSize="@dimen/text_size_large"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_line_width_2"
+            android:background="@drawable/base_horizontal_line" >
+        </View>
+        <TextView
+            android:id="@+id/rent_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="出租大量单车"
+            android:drawableRight="@drawable/right_click"
+            android:paddingLeft="5dp"
+            android:textSize="@dimen/text_size_large"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_line_width_2"
+            android:background="@drawable/base_horizontal_line" >
+        </View>
         <TextView
             android:id="@+id/logout"
             android:layout_width="wrap_content"
@@ -69,6 +87,11 @@
             android:drawableRight="@drawable/right_click"
             android:paddingLeft="5dp"
             android:textSize="@dimen/text_size_large"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_line_width_2"
+            android:background="@drawable/base_horizontal_line" >
+        </View>
 
     </LinearLayout>
 </RelativeLayout>

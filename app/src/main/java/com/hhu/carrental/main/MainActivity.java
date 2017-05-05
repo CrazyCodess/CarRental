@@ -3,9 +3,11 @@ package com.hhu.carrental.main;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -13,11 +15,14 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapBaseIndoorMapInfo;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
@@ -28,7 +33,6 @@ import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.im.BmobUserManager;
@@ -49,12 +53,11 @@ public class MainActivity extends Activity {
     Marker marker = null;
     ImageButton slidebtn = null;
     ImageView locbtn = null;
-    //public LocationClient mLocationClient = null;
     boolean isFirstLoc = true;
     private BitmapDescriptor mCurrentMarker;
     private LocationService locationService;
-    private List<BikeInfo> bikeList = new ArrayList<>();
-
+    private BitmapDescriptor bitmap;
+    private RelativeLayout hireLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,18 +68,19 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         setContentView(R.layout.activity_main);
-       // BmobChat.DEBUG_MODE = true;
-       // BmobChat.getInstance(this).init("67636fb1d0e031952bd2fb8956cfd1b6");
-        //BmobChat.getInstance(this).init("bc48a49d18b462fd2114fe71f4f95722");
         initmap();//初始化百度地图
         location();//进行定位
 
     }
 
     private void initmap(){
+        bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.booking_bike_marker);
+        queryBikeList();
         locbtn = (ImageView)findViewById(R.id.loc_btn);
         locbtn.setScaleType(ImageView.ScaleType.FIT_START);
         mapView=(MapView)findViewById(R.id.bmapView);
+        hireLayout = (RelativeLayout)findViewById(R.id.hire_layout);
         baiduMap = mapView.getMap();
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         baiduMap.setTrafficEnabled(false);
@@ -84,19 +88,33 @@ public class MainActivity extends Activity {
         baiduMap.setMyLocationEnabled(true);
         baiduMap.setBuildingsEnabled(true);
         baiduMap.setMaxAndMinZoomLevel(3,21);
-        //mLocationClient = new LocationClient(getApplicationContext());
-       // mLocationClient.registerLocationListener(myListenter);
         mLocMode = LocationMode.NORMAL;
 
 
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
-        queryBikeList();
 
-        //initSlidingMenu();
+
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
+            public boolean onMarkerClick(final Marker marker) {
+                marker.setToTop();
+                hireLayout.setVisibility(View.VISIBLE);
+
+                return true;
+            }
+        });
+        baiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                hireLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
         initSlide();
-        //initLocation();
-
     }
 
     private void location(){
@@ -207,22 +225,28 @@ public class MainActivity extends Activity {
      */
     private void queryBikeList(){
         BmobQuery<BikeInfo> query = new BmobQuery<>();
-        query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        //query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.findObjects(this, new FindListener<BikeInfo>() {
             @Override
             public void onSuccess(List<BikeInfo> list) {
+
                 for(BikeInfo info:list){
-                    bikeList.add(info);
+
+
+                    LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
+                    MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
+                    option.animateType(MarkerOptions.MarkerAnimateType.grow);
+                    baiduMap.addOverlay(option);
                 }
             }
 
             @Override
             public void onError(int i, String s) {
+                Log.e("错误错误",i+s);
                 Toast.makeText(getApplicationContext(),"加载失败",Toast.LENGTH_LONG).show();
             }
         });
     }
-
 
     @Override
     protected void onDestroy() {

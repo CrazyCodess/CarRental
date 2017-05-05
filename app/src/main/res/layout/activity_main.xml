@@ -28,7 +28,27 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
     </RelativeLayout>
-
+    <RelativeLayout
+        android:id="@+id/hire_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#efffffff"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/hire"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_action_bar_height"
+            android:background="@drawable/btn_login_selector"
+            android:gravity="center"
+            android:text="@string/hire"
+            android:textColor="@color/base_color_text_white"
+            android:textSize="@dimen/text_size_large"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="11dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
