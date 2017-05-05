@@ -16,6 +16,9 @@ import com.hhu.carrental.main.MainActivity;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.SaveListener;
 
+/**
+ * 登陆
+ */
 public class LoginActivity extends Activity  implements View.OnClickListener {
 
     private EditText userName;

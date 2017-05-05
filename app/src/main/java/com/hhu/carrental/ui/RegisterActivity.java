@@ -18,6 +18,9 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.listener.SaveListener;
 
+/**
+ * 注册
+ */
 public class RegisterActivity extends Activity  implements View.OnClickListener {
 
     private EditText eUserName;

@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -24,11 +23,21 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
+import com.hhu.carrental.bean.BikeInfo;
+import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 
-import cn.bmob.im.BmobUserManager;
+import java.util.ArrayList;
+import java.util.List;
 
+import cn.bmob.im.BmobUserManager;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+
+/**
+ * 主界面显示
+ */
 public class MainActivity extends Activity {
 
     MapView mapView = null;
@@ -40,9 +49,11 @@ public class MainActivity extends Activity {
     Marker marker = null;
     ImageButton slidebtn = null;
     ImageView locbtn = null;
-    public LocationClient mLocationClient = null;
+    //public LocationClient mLocationClient = null;
     boolean isFirstLoc = true;
     private BitmapDescriptor mCurrentMarker;
+    private LocationService locationService;
+    private List<BikeInfo> bikeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +84,18 @@ public class MainActivity extends Activity {
         baiduMap.setMyLocationEnabled(true);
         baiduMap.setBuildingsEnabled(true);
         baiduMap.setMaxAndMinZoomLevel(3,21);
+        //mLocationClient = new LocationClient(getApplicationContext());
+       // mLocationClient.registerLocationListener(myListenter);
         mLocMode = LocationMode.NORMAL;
-        mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(myListenter);
-        mLocMode = LocationMode.NORMAL;
+
+
+        locationService = new LocationService(getApplicationContext());
+        locationService.registerListener(myListenter);
+        queryBikeList();
+
         //initSlidingMenu();
         initSlide();
-        initLocation();
+        //initLocation();
 
     }
 
@@ -114,13 +130,13 @@ public class MainActivity extends Activity {
 
             }
         });
-        mLocationClient.start();
+        locationService.start();
 
     }
 
 
 
-    private void initLocation(){
+/*    private void initLocation(){
         //配置定位SDK各配置参数
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
@@ -134,9 +150,9 @@ public class MainActivity extends Activity {
         option.setIgnoreKillProcess(false);
         option.SetIgnoreCacheException(false);
         option.setEnableSimulateGps(false);
-        mLocationClient.setLocOption(option);
+        //mLocationClient.setLocOption(option);
 
-    }
+    }*/
 
     public class MyLocationListenner implements BDLocationListener {
 
@@ -181,31 +197,38 @@ public class MainActivity extends Activity {
                 }else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
-/*                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
-                startActivity(intent);*/
-                //slidMenu.toggle();
             }
         });
     }
-/*    private void initSlidingMenu(){
-        slidMenu = new SlidingMenu(this);
 
-        slidMenu.setMode(SlidingMenu.LEFT);
-        slidMenu.setSecondaryMenu(R.layout.slide_layout);
-        slidMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        slidMenu.setShadowWidth(10);
-        slidMenu.setBehindOffsetRes(R.dimen.sliding_menu_offset);// 设置偏离距离
-        slidMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);// 全屏模式，全屏滑动都可打开
-        slide();
-    }*/
 
+    /**
+     * 查询单车信息
+     */
+    private void queryBikeList(){
+        BmobQuery<BikeInfo> query = new BmobQuery<>();
+        query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query.findObjects(this, new FindListener<BikeInfo>() {
+            @Override
+            public void onSuccess(List<BikeInfo> list) {
+                for(BikeInfo info:list){
+                    bikeList.add(info);
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Toast.makeText(getApplicationContext(),"加载失败",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
     @Override
     protected void onDestroy() {
 
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mLocationClient.stop();
+        locationService.stop();
         baiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();
         mapView = null;

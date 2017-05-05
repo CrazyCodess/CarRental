@@ -13,7 +13,6 @@
         android:layout_margin="10dp"
         android:background="@drawable/input"
         android:hint="单车类型"
-        android:inputType="phone"
         android:maxLength="11"
         android:paddingLeft="10dp" />
 
@@ -24,12 +23,11 @@
         android:layout_margin="10dp"
         android:background="@drawable/input"
         android:hint="出租时长"
-        android:inputType="phone"
         android:maxLength="11"
         android:paddingLeft="10dp" />
 
     <EditText
-        android:id = "@+id/bike_telephone"
+        android:id = "@+id/bike_phone"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="10dp"
@@ -46,7 +44,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/input"
         android:hint="锁密码"
-
+        android:inputType="phone"
         android:maxLength="11"
         android:paddingLeft="10dp" />
 
@@ -60,8 +58,19 @@
         android:minLines="4"
         android:paddingLeft="10dp" />
     <com.baidu.mapapi.map.MapView
-        android:id="@+id/get_location"
+        android:id="@+id/loc_bmapView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_weight="0.50" />
+    <Button
+        android:id="@+id/rent_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base_action_bar_height"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@drawable/btn_login_selector"
+        android:gravity="center"
+        android:text="@string/rent"
+        android:textColor="@color/base_color_text_white"
+        android:textSize="@dimen/text_size_large" />
 </LinearLayout>

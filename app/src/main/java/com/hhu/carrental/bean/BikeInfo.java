@@ -20,6 +20,18 @@ public class BikeInfo extends BmobObject {
     private String bikeDetail;
     private String rentTime;
 
+    public BikeInfo(String unlockPass, BmobGeoPoint location
+            , User user, String phoneNumber, String bikeType, String bikeDetail, String rentTime) {
+        this.unlockPass = unlockPass;
+        this.location = location;
+        this.user = user;
+        this.phoneNumber = phoneNumber;
+        this.bikeType = bikeType;
+        this.bikeDetail = bikeDetail;
+        this.rentTime = rentTime;
+        this.isUsed = false;
+    }
+
     public String getBikeType() {
         return bikeType;
     }

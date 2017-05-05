@@ -12,6 +12,9 @@ import com.hhu.carrental.main.MainActivity;
 
 import cn.bmob.im.BmobUserManager;
 
+/**
+ * 个人信息
+ */
 public class UserInfoActivity extends Activity implements View.OnClickListener{
 
     private BmobUserManager userManager;
@@ -33,6 +36,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
         User user = userManager.getCurrentUser(User.class);
         nametv.setText(user.getUsername());
         logout.setOnClickListener(this);
+        rentOut.setOnClickListener(this);
     }
 
     public void onClick(View v){
