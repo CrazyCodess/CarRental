@@ -64,7 +64,10 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.UserInfoActivity" />
         <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.RentOutActivity"></activity>
+        <activity android:name=".ui.RentOutActivity" />
+        <activity
+            android:name=".ui.HireActivity"
+            android:label="@string/title_activity_hire"></activity>
     </application>
 
 </manifest>

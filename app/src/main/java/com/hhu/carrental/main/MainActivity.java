@@ -26,6 +26,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
@@ -33,6 +34,7 @@ import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.im.BmobUserManager;
@@ -76,6 +78,7 @@ public class MainActivity extends Activity {
     private void initmap(){
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
+
         queryBikeList();
         locbtn = (ImageView)findViewById(R.id.loc_btn);
         locbtn.setScaleType(ImageView.ScaleType.FIT_START);
@@ -230,14 +233,18 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(List<BikeInfo> list) {
 
+                List<OverlayOptions> markerList = new ArrayList<OverlayOptions>();
+
                 for(BikeInfo info:list){
 
 
                     LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
                     MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
                     option.animateType(MarkerOptions.MarkerAnimateType.grow);
-                    baiduMap.addOverlay(option);
+                    markerList.add(option);
+                    //baiduMap.addOverlay(option);
                 }
+                baiduMap.addOverlays(markerList);
             }
 
             @Override

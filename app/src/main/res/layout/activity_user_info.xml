@@ -2,13 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg">
+    android:background="@color/userinfo_back">
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,50 +50,86 @@
                 android:textSize="30sp" />
         </RelativeLayout>
 
+
+
+
+
         <View
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_line_width_2"
             android:background="@drawable/base_horizontal_line" >
         </View>
-        <TextView
-            android:id="@+id/rent_out"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:id="@+id/layout_rent_bike"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="出租单车"
-            android:drawableRight="@drawable/right_click"
-            android:paddingLeft="5dp"
-            android:textSize="@dimen/text_size_large"/>
+            android:background="@drawable/btn_selector"
+            android:minHeight="50dp"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/rent_bike"
+                android:textSize="@dimen/text_size_small"/>
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/text_right"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_line_width_2"
             android:background="@drawable/base_horizontal_line" >
         </View>
-        <TextView
-            android:id="@+id/rent_amount"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:id="@+id/layout_rent_amoutbike"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="出租大量单车"
-            android:drawableRight="@drawable/right_click"
-            android:paddingLeft="5dp"
-            android:textSize="@dimen/text_size_large"/>
+            android:background="@drawable/btn_selector"
+            android:minHeight="50dp"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/rent_amount_bike"
+                android:textSize="@dimen/text_size_small"/>
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/text_right"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_line_width_2"
             android:background="@drawable/base_horizontal_line" >
         </View>
-        <TextView
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="退出登陆"
-            android:drawableRight="@drawable/right_click"
-            android:paddingLeft="5dp"
-            android:textSize="@dimen/text_size_large"/>
-        <View
+        <Button
+            android:id="@+id/btn_logout"
+            style="@style/Smile.Button.logout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:layout_height="45dp"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:text="@string/logout"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 </RelativeLayout>

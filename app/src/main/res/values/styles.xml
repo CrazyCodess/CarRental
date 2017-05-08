@@ -5,4 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Smile">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Smile.TextView">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Smile.TextView._White">
+        <item name="android:textColor">@color/base_color_text_white</item>
+    </style>
+    <style name="Smile.Button.logout" parent="Smile.TextView._White">
+        <item name="android:background">@drawable/btn_logout_selector</item>
+    </style>
+
+    <style name="Smile.TextView._Black">
+        <item name="android:textColor">@color/base_color_text_black</item>
+    </style>
 </resources>
