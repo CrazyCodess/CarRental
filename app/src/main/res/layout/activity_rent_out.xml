@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/input"
-        android:hint="单车类型"
+        android:hint="@string/bike_type"
         android:maxLength="11"
         android:paddingLeft="10dp" />
 
@@ -22,7 +22,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/input"
-        android:hint="出租时长"
+        android:hint="@string/hire_time"
         android:maxLength="11"
         android:paddingLeft="10dp" />
 
@@ -32,7 +32,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/input"
-        android:hint="手机"
+        android:hint="@string/bike_phone"
         android:inputType="phone"
         android:maxLength="11"
         android:paddingLeft="10dp" />
@@ -43,7 +43,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/input"
-        android:hint="锁密码"
+        android:hint="@string/bike_pass"
         android:inputType="phone"
         android:maxLength="11"
         android:paddingLeft="10dp" />
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/input"
-        android:hint="单车描述"
+        android:hint="@string/bike_detail"
         android:minLines="4"
         android:paddingLeft="10dp" />
     <com.baidu.mapapi.map.MapView

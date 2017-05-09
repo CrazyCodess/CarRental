@@ -25,7 +25,6 @@ import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.service.LocationService;
 
 import cn.bmob.im.BmobUserManager;
-import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -35,7 +34,6 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
 
     private BikeInfo bikeInfo = null;
     private String biketype;
-    private BmobGeoPoint location;
     private User user;
     private String phoneNumber;
     private String unlockPass;
@@ -54,7 +52,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     private BDLocationListener myListenter = new MyLocationListenner();
     private BmobUserManager userManager;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private BitmapDescriptor mCurrentMarker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +119,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
                 return;
             }
             latitude = location.getLatitude();
-            longtitude = location.getLongitude();
+            longitude = location.getLongitude();
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     .direction(100).latitude(location.getLatitude())
@@ -143,8 +141,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     }
 
     public void saveBikeInfo(){
-        location = new BmobGeoPoint(longtitude,latitude);
-        bikeInfo = new BikeInfo(unlockPass,location,user,phoneNumber,biketype,bikedetail,renttime);
+        bikeInfo = new BikeInfo(unlockPass,Double.toString(latitude),Double.toString(longitude),user,phoneNumber,biketype,bikedetail,renttime);
         final ProgressDialog mpd = new ProgressDialog(this);
         mpd.setTitle("请稍后");
         mpd.setMessage("正在上传...");

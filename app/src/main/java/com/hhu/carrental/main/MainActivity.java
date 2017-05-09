@@ -105,10 +105,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
         baiduMap.setMaxAndMinZoomLevel(3,21);
         mLocMode = LocationMode.NORMAL;
 
+        slidebtn = (ImageButton)findViewById(R.id.slide_btn);
+        slidebtn.setOnClickListener(this);
 
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
-
+        locationService.start();
 
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
@@ -131,7 +133,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 return false;
             }
         });
-        initSlide();
     }
 
     /**
@@ -140,7 +141,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private void location(){
         locbtn.setOnClickListener(this);
         hirebtn.setOnClickListener(this);
-        locationService.start();
 
     }
 
@@ -186,23 +186,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
 
 
-    /**
-     * 初始化顶部左侧按钮
-     */
-    private void initSlide(){
-        slidebtn = (ImageButton)findViewById(R.id.slide_btn);
-        slidebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BmobUserManager userManager = BmobUserManager.getInstance(MainActivity.this);
-                if(userManager.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this,UserInfoActivity.class));
-                }else{
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                }
-            }
-        });
-    }
 
 
     /**
@@ -220,7 +203,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 for(BikeInfo info:list){
 
 
-                    LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
+                    LatLng point = new LatLng(Double.parseDouble(info.getLatitude()),Double.parseDouble(info.getLongitude()));
                     MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
                     option.animateType(MarkerOptions.MarkerAnimateType.grow);
                     markerList.add(option);
@@ -249,6 +232,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
     public void onClick(View v){
+        BmobUserManager userManager = null;
         switch (v.getId()){
             case R.id.loc_btn:
                 switch (mLocMode){
@@ -277,11 +261,25 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }
                 break;
             case R.id.hirebtn:
+                userManager= BmobUserManager.getInstance(MainActivity.this);
+                if(userManager.getCurrentUser() != null){
+                    Intent intent = new Intent(MainActivity.this, HireActivity.class);
+                    intent.putExtra("markerLat",Double.toString(markerLat));
+                    intent.putExtra("markerLong",Double.toString(markerLong));
+                    startActivity(intent);
+                }else{
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
 
-                Intent intent = new Intent(MainActivity.this, HireActivity.class);
-                intent.putExtra("markerLat",markerLat);
-                intent.putExtra("markerLong",markerLong);
-                startActivity(intent);
+                break;
+            case R.id.slide_btn:
+
+                userManager = BmobUserManager.getInstance(MainActivity.this);
+                if(userManager.getCurrentUser() != null){
+                    startActivity(new Intent(MainActivity.this,UserInfoActivity.class));
+                }else{
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
                 break;
 
         }

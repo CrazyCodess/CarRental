@@ -1,7 +1,6 @@
 package com.hhu.carrental.bean;
 
 import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobGeoPoint;
 
 /**
  * 单车信息
@@ -12,7 +11,7 @@ public class BikeInfo extends BmobObject {
 
     //private String bikeNo;//单车编号
     private String unlockPass;//锁密码
-    private BmobGeoPoint location;//车的位置
+    private String latitude,longitude;
     private User user;
     private Boolean isUsed;//是否已被使用
     private String phoneNumber;
@@ -20,16 +19,20 @@ public class BikeInfo extends BmobObject {
     private String bikeDetail;
     private String rentTime;
 
-    public BikeInfo(String unlockPass, BmobGeoPoint location
+    public BikeInfo(String unlockPass, String latitude,String longitude
             , User user, String phoneNumber, String bikeType, String bikeDetail, String rentTime) {
         this.unlockPass = unlockPass;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.user = user;
         this.phoneNumber = phoneNumber;
         this.bikeType = bikeType;
         this.bikeDetail = bikeDetail;
         this.rentTime = rentTime;
         this.isUsed = false;
+    }
+
+    public BikeInfo() {
     }
 
     public String getBikeType() {
@@ -72,12 +75,20 @@ public class BikeInfo extends BmobObject {
         this.unlockPass = unlockPass;
     }
 
-    public BmobGeoPoint getLocation() {
-        return location;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(BmobGeoPoint location) {
-        this.location = location;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public User getUser() {
