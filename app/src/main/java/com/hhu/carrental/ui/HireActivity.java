@@ -1,7 +1,7 @@
 package com.hhu.carrental.ui;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 
 import com.hhu.carrental.R;
 

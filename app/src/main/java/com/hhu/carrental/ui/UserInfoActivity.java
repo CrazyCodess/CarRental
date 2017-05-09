@@ -86,6 +86,8 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
         for(int i =0;i<30;i++){
             random0 = (Math.random()/100000)*400;
             random1 = (Math.random()/100000)*400;
+            random0 = Double.parseDouble(String .format("%.6f",random0));
+            random1 = Double.parseDouble(String .format("%.6f",random1));
             switch(i%10){
                 case 1:
                 case 2:

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -31,6 +33,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
+import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 
@@ -44,7 +47,7 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * 主界面显示
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
 
     MapView mapView = null;
     private LocationMode mLocMode;
@@ -60,6 +63,10 @@ public class MainActivity extends Activity {
     private LocationService locationService;
     private BitmapDescriptor bitmap;
     private RelativeLayout hireLayout;
+    private double locLatitude;
+    private double locLongtitude;
+    private double markerLat,markerLong;
+    private Button hirebtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +82,10 @@ public class MainActivity extends Activity {
 
     }
 
+
+    /**
+     * 初始化地图
+     */
     private void initmap(){
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
@@ -84,6 +95,7 @@ public class MainActivity extends Activity {
         locbtn.setScaleType(ImageView.ScaleType.FIT_START);
         mapView=(MapView)findViewById(R.id.bmapView);
         hireLayout = (RelativeLayout)findViewById(R.id.hire_layout);
+        hirebtn = (Button)findViewById(R.id.hirebtn);
         baiduMap = mapView.getMap();
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         baiduMap.setTrafficEnabled(false);
@@ -102,7 +114,9 @@ public class MainActivity extends Activity {
             public boolean onMarkerClick(final Marker marker) {
                 marker.setToTop();
                 hireLayout.setVisibility(View.VISIBLE);
-
+                marker.setZIndex(1);
+                markerLat = marker.getPosition().latitude;
+                markerLong = marker.getPosition().longitude;
                 return true;
             }
         });
@@ -120,61 +134,23 @@ public class MainActivity extends Activity {
         initSlide();
     }
 
+    /**
+     * 点击定位按钮进行定位
+     */
     private void location(){
-        locbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mLocMode){
-                    case NORMAL://处于正常模式
-                        mLocMode = LocationMode.FOLLOWING;
-                        locbtn.setImageResource(R.drawable.location0);
-                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                                mLocMode,true,mCurrentMarker
-                        ));
-                        break;
-                    case COMPASS://处于罗盘模式
-                        mLocMode = LocationMode.NORMAL;
-                        locbtn.setImageResource(R.drawable.location0);
-                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                                mLocMode,true,mCurrentMarker
-                        ));
-                        break;
-                    case FOLLOWING://处于跟随模式
-                        mLocMode = LocationMode.COMPASS;
-                        locbtn.setImageResource(R.drawable.location1);
-                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                                mLocMode,true,mCurrentMarker
-                        ));
-                        break;
-                    default:break;
-                }
-
-            }
-        });
+        locbtn.setOnClickListener(this);
+        hirebtn.setOnClickListener(this);
         locationService.start();
 
     }
 
 
 
-/*    private void initLocation(){
-        //配置定位SDK各配置参数
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType("bd09ll");
-        option.setScanSpan(1000);
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true);
-        option.setLocationNotify(true);
-        option.setIsNeedLocationDescribe(true);
-        option.setIsNeedLocationPoiList(true);
-        option.setIgnoreKillProcess(false);
-        option.SetIgnoreCacheException(false);
-        option.setEnableSimulateGps(false);
-        //mLocationClient.setLocOption(option);
 
-    }*/
 
+    /**
+     * 定位监听器
+     */
     public class MyLocationListenner implements BDLocationListener {
 
         private String lastFloor = null;
@@ -188,11 +164,13 @@ public class MainActivity extends Activity {
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             baiduMap.setMyLocationData(locData);
+            locLatitude = location.getLatitude();
+            locLongtitude = location.getLatitude();
             if(isFirstLoc){
                 isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+                LatLng mll = new LatLng(locLatitude,locLongtitude);
                 MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
+                builder.target(mll).zoom(18.0f);
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
 
@@ -207,6 +185,10 @@ public class MainActivity extends Activity {
         }
     }
 
+
+    /**
+     * 初始化顶部左侧按钮
+     */
     private void initSlide(){
         slidebtn = (ImageButton)findViewById(R.id.slide_btn);
         slidebtn.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +206,7 @@ public class MainActivity extends Activity {
 
 
     /**
-     * 查询单车信息
+     * 查询单车信息并在地图上显示单车
      */
     private void queryBikeList(){
         BmobQuery<BikeInfo> query = new BmobQuery<>();
@@ -255,6 +237,55 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * 步行路径导航
+     */
+    private void searchWarkingRoute(){
+
+       BMapManager mMapManager = null;
+    }
+
+
+
+
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.loc_btn:
+                switch (mLocMode){
+                    case NORMAL://处于正常模式
+                        mLocMode = LocationMode.FOLLOWING;
+                        locbtn.setImageResource(R.drawable.location0);
+                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                                mLocMode,true,mCurrentMarker
+                        ));
+                        break;
+                    case COMPASS://处于罗盘模式
+                        mLocMode = LocationMode.NORMAL;
+                        locbtn.setImageResource(R.drawable.location0);
+                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                                mLocMode,true,mCurrentMarker
+                        ));
+                        break;
+                    case FOLLOWING://处于跟随模式
+                        mLocMode = LocationMode.COMPASS;
+                        locbtn.setImageResource(R.drawable.location1);
+                        baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                                mLocMode,true,mCurrentMarker
+                        ));
+                        break;
+                    default:break;
+                }
+                break;
+            case R.id.hirebtn:
+
+                Intent intent = new Intent(MainActivity.this, HireActivity.class);
+                intent.putExtra("markerLat",markerLat);
+                intent.putExtra("markerLong",markerLong);
+                startActivity(intent);
+                break;
+
+        }
+    }
     @Override
     protected void onDestroy() {
 
