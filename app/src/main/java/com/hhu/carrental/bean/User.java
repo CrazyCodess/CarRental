@@ -1,5 +1,7 @@
 package com.hhu.carrental.bean;
 
+import java.util.List;
+
 import cn.bmob.im.bean.BmobChatUser;
 
 /**
@@ -13,6 +15,15 @@ public class User extends BmobChatUser {
     private Boolean sex;//性别true为男
     private String date;//生日
     private Integer incredits;//积分
+    private List<String> bikingRoute;
+
+    public List<String> getBikingRoute() {
+        return bikingRoute;
+    }
+
+    public void setBikingRoute(List<String> bikingRoute) {
+        this.bikingRoute = bikingRoute;
+    }
 
     public String getSchool() {
         return school;

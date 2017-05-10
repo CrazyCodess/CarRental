@@ -1,6 +1,7 @@
 package com.hhu.carrental.bean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 /**
  * 单车信息
@@ -11,7 +12,7 @@ public class BikeInfo extends BmobObject {
 
     //private String bikeNo;//单车编号
     private String unlockPass;//锁密码
-    private String latitude,longitude;
+    private BmobGeoPoint location;
     private User user;
     private Boolean isUsed;//是否已被使用
     private String phoneNumber;
@@ -19,11 +20,10 @@ public class BikeInfo extends BmobObject {
     private String bikeDetail;
     private String rentTime;
 
-    public BikeInfo(String unlockPass, String latitude,String longitude
+    public BikeInfo(String unlockPass, BmobGeoPoint location
             , User user, String phoneNumber, String bikeType, String bikeDetail, String rentTime) {
         this.unlockPass = unlockPass;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.location = location;
         this.user = user;
         this.phoneNumber = phoneNumber;
         this.bikeType = bikeType;
@@ -75,20 +75,12 @@ public class BikeInfo extends BmobObject {
         this.unlockPass = unlockPass;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public BmobGeoPoint getLocation() {
+        return location;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setLocation(BmobGeoPoint location) {
+        this.location = location;
     }
 
     public User getUser() {
@@ -105,5 +97,19 @@ public class BikeInfo extends BmobObject {
 
     public void setUsed(Boolean used) {
         isUsed = used;
+    }
+
+    @Override
+    public String toString() {
+        return "BikeInfo{" +
+                "unlockPass='" + unlockPass + '\'' +
+                ", location=" + location +
+                ", user=" + user +
+                ", isUsed=" + isUsed +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", bikeType='" + bikeType + '\'' +
+                ", bikeDetail='" + bikeDetail + '\'' +
+                ", rentTime='" + rentTime + '\'' +
+                '}';
     }
 }

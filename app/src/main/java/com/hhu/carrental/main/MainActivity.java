@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -30,10 +31,14 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
-import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 
@@ -66,7 +71,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private double locLatitude;
     private double locLongtitude;
     private double markerLat,markerLong;
-    private Button hirebtn;
+    private Button hirebtn,hireFinish;
+    private TextView markerLocation;
+    private String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +103,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mapView=(MapView)findViewById(R.id.bmapView);
         hireLayout = (RelativeLayout)findViewById(R.id.hire_layout);
         hirebtn = (Button)findViewById(R.id.hirebtn);
+        hireFinish = (Button)findViewById(R.id.finish_hire);
+        markerLocation = (TextView)findViewById(R.id.marker_location);
         baiduMap = mapView.getMap();
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         baiduMap.setTrafficEnabled(false);
@@ -107,18 +116,36 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         slidebtn = (ImageButton)findViewById(R.id.slide_btn);
         slidebtn.setOnClickListener(this);
-
+        hireFinish.setOnClickListener(this);
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
         locationService.start();
 
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
+                GeoCoder geoCoder = GeoCoder.newInstance();
+                ReverseGeoCodeOption op = new ReverseGeoCodeOption();
+                LatLng latLng =  marker.getPosition();
+                op.location(latLng);
+                geoCoder.reverseGeoCode(op);
+                geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+
+                    @Override
+                    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult arg0) {
+                        //获取点击的坐标地址
+                        city = arg0.getAddress();
+                    }
+
+                    @Override
+                    public void onGetGeoCodeResult(GeoCodeResult arg0) {
+                    }
+                });
                 marker.setToTop();
                 hireLayout.setVisibility(View.VISIBLE);
-                marker.setZIndex(1);
-                markerLat = marker.getPosition().latitude;
-                markerLong = marker.getPosition().longitude;
+                markerLocation.setText(city);
+                marker.setZIndex(5);
+                markerLat = latLng.latitude;
+                markerLong = latLng.longitude;
                 return true;
             }
         });
@@ -202,14 +229,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
                 for(BikeInfo info:list){
 
-
-                    LatLng point = new LatLng(Double.parseDouble(info.getLatitude()),Double.parseDouble(info.getLongitude()));
+                    Log.e("success",(info == null)+"______"+info.toString());
+                    LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
                     MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
                     option.animateType(MarkerOptions.MarkerAnimateType.grow);
                     markerList.add(option);
                     //baiduMap.addOverlay(option);
                 }
                 baiduMap.addOverlays(markerList);
+
             }
 
             @Override
@@ -263,15 +291,43 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.hirebtn:
                 userManager= BmobUserManager.getInstance(MainActivity.this);
                 if(userManager.getCurrentUser() != null){
-                    Intent intent = new Intent(MainActivity.this, HireActivity.class);
+/*                    Intent intent = new Intent(MainActivity.this, HireActivity.class);
                     intent.putExtra("markerLat",Double.toString(markerLat));
                     intent.putExtra("markerLong",Double.toString(markerLong));
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                            LocationMode.NORMAL,true,null
+                    ));
+                    baiduMap.clear();
+                    hirebtn.setVisibility(View.GONE);
+                    hireFinish.setVisibility(View.VISIBLE);
+                    baiduMap.setOnMapClickListener(null);
+
                 }else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 
                 break;
+
+            case R.id.finish_hire:
+
+                hireFinish.setVisibility(View.GONE);
+                hirebtn.setVisibility(View.VISIBLE);
+                hireLayout.setVisibility(View.GONE);
+                baiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        hireLayout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public boolean onMapPoiClick(MapPoi mapPoi) {
+                        return false;
+                    }
+                });
+                queryBikeList();
+                break;
+
             case R.id.slide_btn:
 
                 userManager = BmobUserManager.getInstance(MainActivity.this);

@@ -39,5 +39,6 @@
     <string name="bike_pass">锁密码</string>
     <string name="bike_detail">单车描述</string>
     <string name="hire_sure">确认租用</string>
+    <string name="hire_finish">结束骑行</string>
 
 </resources>

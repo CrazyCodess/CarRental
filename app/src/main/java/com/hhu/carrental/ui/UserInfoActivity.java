@@ -18,6 +18,7 @@ import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.service.LocationService;
 
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -80,6 +81,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
         locationService.registerListener(myListenter);
         locationService.start();
         BikeInfo bikeInfo = null;
+        BmobGeoPoint location = null;
         double random0=0.0,random1 = 0.0;
         for(int i =0;i<30;i++){
             random0 = (Math.random()/100000)*400;
@@ -90,21 +92,21 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
                 case 1:
                 case 2:
                 case 3:
-                    longitude-=random0;latitude-=random1;
+                    location = new BmobGeoPoint(longitude-random0,latitude-random1);
                     break;
                 case 4:
                 case 5:
-                    longitude+=random0;latitude-=random1;
+                    location = new BmobGeoPoint(longitude+random0,latitude-random1);
                     break;
                 case 7:
                 case 8:
-                    longitude-=random0;latitude+=random1;
+                    location = new BmobGeoPoint(longitude-random0,latitude+random1);
                     break;
                 default:
-                    longitude+=random0;latitude+=random1;
+                    location = new BmobGeoPoint(longitude+random0,latitude+random1);
                     break;
             }
-            bikeInfo = new BikeInfo("123456",Double.toString(latitude),Double.toString(longitude),user,"110","山地车","我是一辆单车","20170506");
+            bikeInfo = new BikeInfo("123456",location,user,"110","山地车","我是一辆单车","20170506");
             bikeInfo.save(this,new SaveListener(){
                 @Override
                 public void onSuccess() {

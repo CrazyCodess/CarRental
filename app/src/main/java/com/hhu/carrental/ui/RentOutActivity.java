@@ -25,6 +25,7 @@ import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.service.LocationService;
 
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -141,7 +142,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     }
 
     public void saveBikeInfo(){
-        bikeInfo = new BikeInfo(unlockPass,Double.toString(latitude),Double.toString(longitude),user,phoneNumber,biketype,bikedetail,renttime);
+        bikeInfo = new BikeInfo(unlockPass,new BmobGeoPoint(longitude,latitude),user,phoneNumber,biketype,bikedetail,renttime);
         final ProgressDialog mpd = new ProgressDialog(this);
         mpd.setTitle("请稍后");
         mpd.setMessage("正在上传...");

@@ -54,8 +54,8 @@ public class HireActivity extends Activity implements View.OnClickListener{
     private void queryBikeInfo(){
         Log.e("queryBikeInfo","成功成功成功");
         BmobQuery<BikeInfo> query = new BmobQuery<>();
-        query.addWhereEqualTo("latitude","31.91709");
-        query.addWhereEqualTo("longitude","118.796024");
+//        query.addWhereEqualTo("latitude","31.91709");
+//        query.addWhereEqualTo("longitude","118.796024");
         query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
         Log.e("queryBikeInfo","start");
         query.findObjects(this, new FindListener<BikeInfo>() {

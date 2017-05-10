@@ -40,18 +40,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:src="@drawable/bike_info_board_location"/>
             <TextView
-                android:id="@+id/bike_location"
+                android:id="@+id/marker_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:text="江苏省南京市江宁区佛城西路"
                 android:textColor="@color/text_black"
                 android:gravity="center_vertical|left"/>
 
@@ -76,6 +76,21 @@
             android:layout_marginBottom="11dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
+        <Button
+            android:id="@+id/finish_hire"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_action_bar_height"
+            android:background="@drawable/btn_login_selector"
+            android:gravity="center"
+            android:text="@string/hire_finish"
+            android:textColor="@color/base_color_text_white"
+            android:textSize="@dimen/text_size_large"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="11dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
