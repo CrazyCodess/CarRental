@@ -4,8 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.hhu.carrental.ui.HireActivity"
-    android:background="@color/userinfo_back"
+
     android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_top">
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:id="@+id/slide_btn"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/back"
+            android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@+id/hire_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/userinfo_back"
+        >
     <TextView
         android:layout_width="match_parent"
         android:gravity="center"
@@ -39,6 +70,29 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:id="@+id/bike_t"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="100dp">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="@string/rentSTime"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/darker_gray"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:id="@+id/rent_start_time"
             />
     </LinearLayout>
 
@@ -113,24 +167,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="150dp"
         android:layout_marginLeft="100dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:text="@string/bike_detail"
             android:textSize="15sp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="left"
             android:textColor="@android:color/darker_gray"
             />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="150dp"
             android:textSize="15sp"
             android:textColor="@android:color/black"
-            android:text="464657867978"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/bike_desc"
             />
     </LinearLayout>
@@ -145,4 +200,5 @@
         android:text="@string/hire_sure"
         android:textColor="@color/base_color_text_white"
         android:textSize="@dimen/text_size_large" />
+</LinearLayout>
 </LinearLayout>

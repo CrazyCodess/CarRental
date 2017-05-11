@@ -4,7 +4,7 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@drawable/shape_top">
         <ImageButton
             android:layout_width="50dp"
@@ -12,9 +12,9 @@
             android:background="#00000000"
             android:id="@+id/slide_btn"
             android:paddingLeft="5dp"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:src="@drawable/slidebtn"
-            android:layout_alignBottom="@+id/title_bar_name"
+
             android:layout_alignParentTop="true" />
         <TextView
             android:id="@+id/title_bar_name"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:text="@string/app_name"
             android:textColor="#ffffff"
             android:textSize="20sp" />
@@ -30,15 +30,16 @@
     <RelativeLayout
         android:id="@+id/hire_layout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="149dp"
         android:background="#efffffff"
         android:elevation="5dip"
         android:visibility="gone"
         >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout">
             <ImageView
 
                 android:layout_width="wrap_content"
@@ -56,11 +57,105 @@
                 android:gravity="center_vertical|left"/>
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_line_width_2"
             android:background="@drawable/base_horizontal_line" >
         </View>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+
+            android:layout_marginTop="3dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout2"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/hire_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+
+                android:text="单车类型"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"
+                />
+            <TextView
+                android:id="@+id/hire_start"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+
+                android:text="单车类型"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"
+                />
+
+            <TextView
+                android:id="@+id/hire_con"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+
+                android:text="单车类型"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentStart="true"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+
+                android:text="单车类型"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"
+                />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center_vertical|center_horizontal"
+
+                android:text="单车类型"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center_vertical|center_horizontal"
+
+                android:text="联系方式"
+                android:textColor="@color/text_black"
+                android:layout_weight="1.0"/>
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/hirebtn"

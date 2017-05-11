@@ -50,6 +50,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
+import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 import com.hhu.carrental.util.WalkingRouteOverlay;
@@ -59,7 +60,10 @@ import java.util.List;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobQueryResult;
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SQLQueryListener;
 
 
 /**
@@ -87,6 +91,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private Button hirebtn,hireFinish;
     private TextView markerLocation;
     private String city;
+    private BikeInfo bikeInfo;
     private PlanNode sNode  = null,eNode = null;
     private RoutePlanSearch mSearch = null;
 //    private PlanNode end = new PlanNode();
@@ -100,11 +105,31 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         // 隐藏状态栏
       /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+       // PermissionManager permiss = PermissionManager.with(this);
+        //permiss.request();
 
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
         location();//进行定位
+        if(getIntent().getStringExtra("msg") != null){
+            Log.e("hire","返回返回");
+            baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                    LocationMode.NORMAL,true,mCurrentMarker
+            ));
+            baiduMap.clear();
+            hirebtn.setVisibility(View.GONE);
+            hireFinish.setVisibility(View.VISIBLE);
+            hireLayout.setVisibility(View.VISIBLE);
+            baiduMap.setOnMapClickListener(null);
 
+            setAddress(new LatLng(locLatitude,locLongtitude));
+            Log.e("Adress",city);
+            markerLocation.setText(city);
+
+        }
+        else{
+            queryBikeList();
+        }
 
     }
 
@@ -116,7 +141,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
 
-        queryBikeList();
+
         locbtn = (ImageView)findViewById(R.id.loc_btn);
         locbtn.setScaleType(ImageView.ScaleType.FIT_START);
         mapView=(MapView)findViewById(R.id.bmapView);
@@ -138,30 +163,42 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         hireFinish.setOnClickListener(this);
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
-        locationService.start();
+        locationService.mStart();
 
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
-                GeoCoder geoCoder = GeoCoder.newInstance();
-                ReverseGeoCodeOption op = new ReverseGeoCodeOption();
                 LatLng latLng =  marker.getPosition();
-                op.location(latLng);
-                geoCoder.reverseGeoCode(op);
-                geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
 
-                    @Override
-                    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult arg0) {
-                        //获取点击的坐标地址
-                        city = arg0.getAddress();
-                    }
+                setAddress(latLng);
+                marker.setToTop();
 
+
+                String bql = "select * from BikeInfo where location  near ["+latLng.longitude+","+latLng.latitude+"] max 1 miles";
+                BmobQuery<BikeInfo> bquery = new BmobQuery<BikeInfo>();
+                bquery.setSQL(bql);
+                //bquery.setPreparedParams(new Object[]{latLng.longitude,latLng.latitude});
+                bquery.doSQLQuery(MainActivity.this, new SQLQueryListener<BikeInfo>() {
                     @Override
-                    public void onGetGeoCodeResult(GeoCodeResult arg0) {
+                    public void done(BmobQueryResult<BikeInfo> bmobQueryResult, BmobException e) {
+                        if(e ==null){
+                            List<BikeInfo> list = (List<BikeInfo>) bmobQueryResult.getResults();
+                            if(list!=null && list.size()>0){
+                                bikeInfo = list.get(0);
+                                Log.e("BikeInfo:",bikeInfo.toString());
+                            }else{
+                                Log.e("smile", "查询成功，无数据返回");
+                            }
+                        }else{
+                            Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
+                            Log.e("异常:",Log.getStackTraceString(e));
+                            //e.printStackTrace();
+                        }
                     }
                 });
-                marker.setToTop();
+
+
                 hireLayout.setVisibility(View.VISIBLE);
                 markerLocation.setText(city);
                 marker.setZIndex(5);
@@ -197,7 +234,25 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
     }
 
+    private void setAddress(LatLng latLng){
+        GeoCoder geoCoder = GeoCoder.newInstance();
+        ReverseGeoCodeOption op = new ReverseGeoCodeOption();
 
+        op.location(latLng);
+        geoCoder.reverseGeoCode(op);
+        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult arg0) {
+                //获取点击的坐标地址
+                city = arg0.getAddress();
+            }
+
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult arg0) {
+            }
+        });
+    }
 
 
 
@@ -349,17 +404,16 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             case R.id.hirebtn:
                 userManager= BmobUserManager.getInstance(MainActivity.this);
                 if(userManager.getCurrentUser() != null){
-/*                    Intent intent = new Intent(MainActivity.this, HireActivity.class);
-                    intent.putExtra("markerLat",Double.toString(markerLat));
-                    intent.putExtra("markerLong",Double.toString(markerLong));
-                    startActivity(intent);*/
-                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                    Intent intent = new Intent(MainActivity.this, HireActivity.class);
+                    intent.putExtra("bikeInfo",bikeInfo);
+                    startActivity(intent);
+/*                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                             LocationMode.NORMAL,true,null
                     ));
                     baiduMap.clear();
                     hirebtn.setVisibility(View.GONE);
                     hireFinish.setVisibility(View.VISIBLE);
-                    baiduMap.setOnMapClickListener(null);
+                    baiduMap.setOnMapClickListener(null);*/
 
                 }else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));

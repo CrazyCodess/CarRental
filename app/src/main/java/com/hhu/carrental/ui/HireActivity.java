@@ -5,27 +5,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
+import com.hhu.carrental.main.MainActivity;
 
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class HireActivity extends Activity implements View.OnClickListener{
 
     private String bikeLat;
     private String bikeLon;
-    private TextView biketype,hiretime,bikephone,bikePwd,bikedetail;
+    private TextView biketype,hiretime,bikephone,bikePwd,bikedetail,rentSTime;
     private BikeInfo bikeInfo;
+    private Button hireSure;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_hire);
         init();
     }
@@ -33,51 +33,21 @@ public class HireActivity extends Activity implements View.OnClickListener{
     private void init(){
 
         Intent intent = getIntent();
-        bikeLat = intent.getStringExtra("markerLat");
-        bikeLon = intent.getStringExtra("markerLong");
+        bikeInfo = (BikeInfo)intent.getSerializableExtra("bikeInfo");
         biketype = (TextView)findViewById(R.id.bike_t);
+        hireSure = (Button)findViewById(R.id.hire_sure);
         hiretime = (TextView)findViewById(R.id.hire_time);
+        rentSTime = (TextView)findViewById(R.id.rent_start_time);
         bikephone = (TextView)findViewById(R.id.bike_con);
         bikePwd = (TextView)findViewById(R.id.bike_paw);
         bikedetail = (TextView)findViewById(R.id.bike_desc);
-        queryBikeInfo();
-        if(bikeInfo == null)Log.e("sucess","*"+bikeLat+"---------------------"+bikeLon+"*");
-        else Log.e("sucess",bikeInfo.toString());
         biketype.setText(bikeInfo.getBikeType());
         hiretime.setText(bikeInfo.getRentTime());
         bikephone.setText(bikeInfo.getPhoneNumber());
         bikePwd.setText(bikeInfo.getUnlockPass());
-        bikePwd.setText(bikeInfo.getBikeDetail());
-    }
-
-
-    private void queryBikeInfo(){
-        Log.e("queryBikeInfo","成功成功成功");
-        BmobQuery<BikeInfo> query = new BmobQuery<>();
-//        query.addWhereEqualTo("latitude","31.91709");
-//        query.addWhereEqualTo("longitude","118.796024");
-        query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
-        Log.e("queryBikeInfo","start");
-        query.findObjects(this, new FindListener<BikeInfo>() {
-
-            @Override
-            public void onSuccess(List<BikeInfo> list) {
-                Log.e("sucess","成功成功成功");
-
-                bikeInfo = list.get(0);
-                Log.e("sucess",bikeInfo.toString());
-            }
-
-
-            @Override
-            public void onError(int i, String s) {
-                Log.e("错误错误",i+s);
-                Toast.makeText(getApplicationContext(),"加载失败",Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        Log.e("queryBikeInfo","stop");
+        bikedetail.setText(bikeInfo.getBikeDetail());
+        rentSTime.setText(bikeInfo.getCreatedAt());
+        hireSure.setOnClickListener(this);
     }
 
 
@@ -97,8 +67,11 @@ public class HireActivity extends Activity implements View.OnClickListener{
                         Log.e("failure","失败失败失败");
                     }
                 });
-                startActivity(new Intent());
+                Intent intent = new Intent(HireActivity.this, MainActivity.class);
+                intent.putExtra("msg","hire");
+                startActivity(intent);
                 finish();
+                //MainActivity.finish();
                 break;
             default:
                 break;

@@ -35,11 +35,13 @@
     <string name="title_activity_hire">HireActivity</string>
     <string name="bike_info">单车信息</string>
     <string name="bike_type">单车类型</string>
+    <string name="rentSTime">出租日期</string>
     <string name="hire_time">出租时长</string>
     <string name="bike_phone">联系方式</string>
     <string name="bike_pass">锁密码</string>
     <string name="bike_detail">单车描述</string>
     <string name="hire_sure">确认租用</string>
     <string name="hire_finish">结束骑行</string>
+    <string name="user_setting">设置</string>
 
 </resources>

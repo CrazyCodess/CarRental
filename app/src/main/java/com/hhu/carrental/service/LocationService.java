@@ -21,15 +21,22 @@ public class LocationService {
      *
      * @param locationContext
      */
-    public LocationService(Context locationContext){
+/*    public LocationService(Context locationContext){
         synchronized (objLock) {
             if(client == null){
                 client = new LocationClient(locationContext);
                 client.setLocOption(getDefaultLocationClientOption());
             }
         }
-    }
+    }*/
+    public LocationService(Context locationContext){
 
+            if(client == null){
+                client = new LocationClient(locationContext);
+                client.setLocOption(getDefaultLocationClientOption());
+            }
+
+    }
     /***
      *
      * @param listener
@@ -102,6 +109,10 @@ public class LocationService {
                 client.start();
             }
         }
+    }
+    public void mStart(){
+        client.start();
+
     }
     public void stop(){
         synchronized (objLock) {

@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/userinfo_back">
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_top">
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:id="@+id/slide_btn"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/back"
+            android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@+id/rent_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
@@ -10,13 +35,15 @@
         android:orientation="vertical"
         android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/userinfo_back">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="224dp"
             android:background="@drawable/userinfoback"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="0.99">
 
             <TextView
                 android:id="@+id/app_name"
@@ -47,6 +74,7 @@
                 android:layout_alignEnd="@+id/app_name"
                 android:layout_below="@+id/mobie_btn"
                 android:layout_marginTop="36dp"
+                android:textColor="@color/base_color_text_white"
                 android:textSize="30sp" />
         </RelativeLayout>
 
@@ -154,6 +182,38 @@
             android:layout_height="@dimen/base_line_width_2"
             android:background="@drawable/base_horizontal_line" >
         </View>
+
+        <RelativeLayout
+            android:id="@+id/user_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector"
+            android:minHeight="50dp"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/user_setting"
+                android:textSize="@dimen/text_size_small"/>
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/text_right"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_line_width_2"
+            android:background="@drawable/base_horizontal_line" >
+        </View>
         <Button
             android:id="@+id/btn_logout"
             style="@style/Smile.Button.logout"
@@ -164,4 +224,4 @@
             android:textSize="18sp"/>
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
