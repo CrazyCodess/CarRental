@@ -74,38 +74,29 @@
             android:layout_below="@+id/linearLayout"
             android:layout_alignParentStart="true"
             android:id="@+id/linearLayout2"
-            android:visibility="gone"
             >
             <TextView
-                android:id="@+id/hire_type"
+                android:id="@+id/hire_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
-
-                android:text="单车类型"
+                android:text="￥1.0元"
                 android:gravity="center_vertical|center_horizontal"
                 android:textColor="@color/text_black"
                 android:layout_weight="1.0"
                 />
             <TextView
-                android:id="@+id/hire_start"
+                android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
-
-                android:text="单车类型"
                 android:gravity="center_vertical|center_horizontal"
                 android:textColor="@color/text_black"
                 android:layout_weight="1.0"
                 />
 
             <TextView
-                android:id="@+id/hire_con"
+                android:id="@+id/contract"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
-
-                android:text="单车类型"
                 android:gravity="center_vertical|center_horizontal"
                 android:textColor="@color/text_black"
                 android:layout_weight="1.0"/>
@@ -117,42 +108,38 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:orientation="horizontal"
-
+            android:id="@+id/linearLayout3"
             android:layout_below="@+id/linearLayout2"
             android:layout_alignParentStart="true"
-            android:visibility="gone">
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
-
-                android:text="单车类型"
+                android:text="@string/hire_cost"
                 android:gravity="center_vertical|center_horizontal"
-                android:textColor="@color/text_black"
+
                 android:layout_weight="1.0"
                 />
 
             <TextView
-                android:id="@+id/textView2"
+
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
                 android:gravity="center_vertical|center_horizontal"
+                android:text="@string/distance"
 
-                android:text="单车类型"
-                android:textColor="@color/text_black"
                 android:layout_weight="1.0"/>
 
             <TextView
-                android:id="@+id/textView"
+
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
+                android:layout_weight="1.0"
                 android:gravity="center_vertical|center_horizontal"
-
-                android:text="联系方式"
-                android:textColor="@color/text_black"
-                android:layout_weight="1.0"/>
+                android:text="@string/walk_time"
+                />
 
 
         </LinearLayout>

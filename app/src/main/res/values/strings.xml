@@ -43,5 +43,8 @@
     <string name="hire_sure">确认租用</string>
     <string name="hire_finish">结束骑行</string>
     <string name="user_setting">设置</string>
+    <string name="hire_cost">预计费用</string>
+    <string name="distance">距离起始位置</string>
+    <string name="walk_time">步行时间</string>
 
 </resources>

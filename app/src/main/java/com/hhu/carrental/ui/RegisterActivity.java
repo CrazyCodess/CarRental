@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hhu.carrental.R;
@@ -30,7 +31,8 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
     private EditText eEmail;
     private Button btn_register;
     private Button	btn_cancel;
-    BmobUserManager userManager;
+    private BmobUserManager userManager;
+    private ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
     }
 
     private void initView(){
+        back = (ImageButton)findViewById(R.id.regis_back);
+        back.setOnClickListener(this);
         eUserName = (EditText)findViewById(R.id.et_username);
         eUserPassword= (EditText)findViewById(R.id.et_password);
         mUserPassword = (EditText)findViewById(R.id.et_SurePassword);
@@ -59,6 +63,9 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
         String email = eEmail.getText().toString();
         boolean isNetConnected = CheckNetwork.isNetworkAvailable(this);
         switch (v.getId()){
+            case R.id.regis_back:
+                finish();
+                break;
             case R.id.btn_register_2:
                 if(!isNetConnected){
                     Toast.makeText(RegisterActivity.this, "当前网络不可用，请检查您的网络", Toast.LENGTH_LONG).show();

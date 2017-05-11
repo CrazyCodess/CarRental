@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -56,6 +57,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     private double latitude;
     private double longitude;
     private BitmapDescriptor mCurrentMarker;
+    private ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,8 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     }
 
     private void initView(){
-
+        back = (ImageButton)findViewById(R.id.rent_back);
+        back.setOnClickListener(this);
         bikeType = (EditText)findViewById(R.id.bike_type);
         rentTime = (EditText)findViewById(R.id.rent_time);
         bikephone = (EditText)findViewById(R.id.bike_phone);
@@ -103,6 +106,9 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
             case R.id.rent_btn:
                 saveBikeInfo();
                 startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            case R.id.rent_back:
                 finish();
                 break;
             default:

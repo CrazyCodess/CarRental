@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hhu.carrental.R;
@@ -22,6 +23,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
     private TextView biketype,hiretime,bikephone,bikePwd,bikedetail,rentSTime;
     private BikeInfo bikeInfo;
     private Button hireSure;
+    private ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +33,8 @@ public class HireActivity extends Activity implements View.OnClickListener{
     }
 
     private void init(){
-
+        back = (ImageButton)findViewById(R.id.hire_back);
+        back.setOnClickListener(this);
         Intent intent = getIntent();
         bikeInfo = (BikeInfo)intent.getSerializableExtra("bikeInfo");
         biketype = (TextView)findViewById(R.id.bike_t);
@@ -72,6 +75,9 @@ public class HireActivity extends Activity implements View.OnClickListener{
                 startActivity(intent);
                 finish();
                 //MainActivity.finish();
+                break;
+            case R.id.hire_back:
+                finish();
                 break;
             default:
                 break;

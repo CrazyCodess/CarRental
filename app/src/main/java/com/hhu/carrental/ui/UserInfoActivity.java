@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     private double longitude;
     private User user;
     private LocationService locationService;
+    private ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     private void initView(){
         nametv = (TextView) findViewById(R.id.username);
         logout = (Button) findViewById(R.id.btn_logout);
+        back = (ImageButton) findViewById(R.id.userinfo_back);
         rentOut = (RelativeLayout) findViewById(R.id.layout_rent_bike);
         user = userManager.getCurrentUser(User.class);
         nametv.setText(user.getUsername());
@@ -55,6 +58,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
 
         rentAmount = (RelativeLayout)findViewById(R.id.layout_rent_amoutbike);
         rentAmount.setOnClickListener(this);
+        back.setOnClickListener(this);
 
         BDLocationListener myListenter = new MyLocationListenner();
         locationService = new LocationService(getApplicationContext());
@@ -76,6 +80,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
                 rentAmoutBike();
                 startActivity(new Intent(this,MainActivity.class));
                 locationService.stop();
+                finish();
+                break;
+            case R.id.userinfo_back:
                 finish();
                 break;
             default:

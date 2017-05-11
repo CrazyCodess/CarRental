@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
@@ -71,16 +73,16 @@ import cn.bmob.v3.listener.SQLQueryListener;
  */
 public class MainActivity extends Activity implements View.OnClickListener,OnGetRoutePlanResultListener {
 
-    MapView mapView = null;
+    private MapView mapView = null;
     private LocationMode mLocMode;
     //public LocationClient mLocationClient = null;
     public BDLocationListener myListenter = new MyLocationListenner();
-    MapBaseIndoorMapInfo mMapBaseIndoorMapInfo = null;
-    BaiduMap baiduMap=null;
-    Marker marker = null;
-    ImageButton slidebtn = null;
-    ImageView locbtn = null;
-    boolean isFirstLoc = true;
+    private MapBaseIndoorMapInfo mMapBaseIndoorMapInfo = null;
+    private BaiduMap baiduMap=null;
+    private Marker marker = null;
+    private ImageButton slidebtn = null;
+    private ImageView locbtn = null;
+    private boolean isFirstLoc = true;
     private BitmapDescriptor mCurrentMarker;
     private LocationService locationService;
     private BitmapDescriptor bitmap;
@@ -90,10 +92,12 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private double markerLat,markerLong;
     private Button hirebtn,hireFinish;
     private TextView markerLocation;
-    private String city;
+    private String city,loccity;
     private BikeInfo bikeInfo;
     private PlanNode sNode  = null,eNode = null;
     private RoutePlanSearch mSearch = null;
+    private TextView distance,contract;
+    private LinearLayout ll1,ll2,ll3;
 //    private PlanNode end = new PlanNode();
     //private MK
     @Override
@@ -121,10 +125,15 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             hireFinish.setVisibility(View.VISIBLE);
             hireLayout.setVisibility(View.VISIBLE);
             baiduMap.setOnMapClickListener(null);
-
+/*
             setAddress(new LatLng(locLatitude,locLongtitude));
-            Log.e("Adress",city);
-            markerLocation.setText(city);
+            //Log.e("Adress",city);
+            if(loccity != null&&loccity != ""){
+                markerLocation.setText(loccity);
+            }*/
+            ll1.setVisibility(View.GONE);
+            ll2.setVisibility(View.GONE);
+            ll3.setVisibility(View.GONE);
 
         }
         else{
@@ -141,7 +150,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
 
-
+        ll1 = (LinearLayout)findViewById(R.id.linearLayout2);
+        ll2 = (LinearLayout)findViewById(R.id.linearLayout3);
+        ll3 = (LinearLayout)findViewById(R.id.linearLayout);
+        distance = (TextView)findViewById(R.id.distance);
+        contract = (TextView)findViewById(R.id.contract);
         locbtn = (ImageView)findViewById(R.id.loc_btn);
         locbtn.setScaleType(ImageView.ScaleType.FIT_START);
         mapView=(MapView)findViewById(R.id.bmapView);
@@ -169,6 +182,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
+                //mSearch.destroy();
                 LatLng latLng =  marker.getPosition();
 
                 setAddress(latLng);
@@ -191,8 +205,8 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                                 Log.e("smile", "查询成功，无数据返回");
                             }
                         }else{
-                            Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
-                            Log.e("异常:",Log.getStackTraceString(e));
+                            //Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
+                            //Log.e("异常:",Log.getStackTraceString(e));
                             //e.printStackTrace();
                         }
                     }
@@ -208,7 +222,12 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 sNode = PlanNode.withLocation(new LatLng(locLatitude,locLongtitude));
                 mSearch.walkingSearch((new WalkingRoutePlanOption())
                         .from(sNode).to(eNode));
+                double time = DistanceUtil.getDistance(new LatLng(locLatitude,locLongtitude),latLng)+0.5;
+                distance.setText((int)time+"米");
 
+
+                contract.setText(((int)(time/60.0+0.5)+1)+"分钟");
+                //Log.e("BikeInfo1:",bikeInfo.toString());
                 return true;
             }
         });
@@ -246,6 +265,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             public void onGetReverseGeoCodeResult(ReverseGeoCodeResult arg0) {
                 //获取点击的坐标地址
                 city = arg0.getAddress();
+                loccity = arg0.getAddress();
             }
 
             @Override
@@ -273,7 +293,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                     .longitude(location.getLongitude()).build();
             baiduMap.setMyLocationData(locData);
             locLatitude = location.getLatitude();
-            locLongtitude = location.getLatitude();
+            locLongtitude = location.getLongitude();
             if(isFirstLoc){
                 isFirstLoc = false;
                 LatLng mll = new LatLng(locLatitude,locLongtitude);
@@ -325,7 +345,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             @Override
             public void onError(int i, String s) {
                 Log.e("错误错误",i+s);
-                Toast.makeText(getApplicationContext(),"加载失败",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"加载失败",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -422,7 +442,9 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 break;
 
             case R.id.finish_hire:
-
+                ll1.setVisibility(View.VISIBLE);
+                ll2.setVisibility(View.VISIBLE);
+                ll3.setVisibility(View.VISIBLE);
                 hireFinish.setVisibility(View.GONE);
                 hirebtn.setVisibility(View.VISIBLE);
                 hireLayout.setVisibility(View.GONE);

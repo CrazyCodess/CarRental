@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hhu.carrental.R;
@@ -26,6 +27,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
     private EditText password;
     private Button loginbtn;
     private Button regisbtn;
+    private ImageButton back;
     private BmobUserManager userManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
         userName = (EditText)findViewById(R.id.et_username);
         password = (EditText)findViewById(R.id.et_password);
         loginbtn = (Button)findViewById(R.id.btn_login);
+        back = (ImageButton)findViewById(R.id.login_back);
+        back.setOnClickListener(this);
         regisbtn = (Button)findViewById(R.id.btn_register_1);
         regisbtn.setOnClickListener(this);
         loginbtn.setOnClickListener(this);
@@ -52,6 +56,9 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
         String passwd = password.getText().toString();
 
         switch (v.getId()){
+            case R.id.login_back:
+                finish();
+                break;
             case R.id.btn_login:
                 if(username.equals("")||passwd.equals("")){
                     Toast.makeText(this,"用户名或密码不能为空",Toast.LENGTH_LONG).show();

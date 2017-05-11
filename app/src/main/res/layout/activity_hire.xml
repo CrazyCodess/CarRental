@@ -14,13 +14,13 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#00000000"
-            android:id="@+id/slide_btn"
+            android:id="@+id/hire_back"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:src="@drawable/back"
             android:layout_alignParentTop="true" />
         <TextView
-            android:id="@+id/hire_back"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
