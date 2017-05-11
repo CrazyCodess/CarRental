@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -31,16 +31,28 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.IndoorRouteResult;
+import com.baidu.mapapi.search.route.MassTransitRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
+import com.hhu.carrental.util.WalkingRouteOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +61,11 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
+
 /**
  * 主界面显示
  */
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener,OnGetRoutePlanResultListener {
 
     MapView mapView = null;
     private LocationMode mLocMode;
@@ -74,9 +87,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button hirebtn,hireFinish;
     private TextView markerLocation;
     private String city;
+    private PlanNode sNode  = null,eNode = null;
+    private RoutePlanSearch mSearch = null;
+//    private PlanNode end = new PlanNode();
+    //private MK
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         SDKInitializer.initialize(getApplicationContext());
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
@@ -86,6 +104,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
         location();//进行定位
+
 
     }
 
@@ -121,6 +140,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         locationService.registerListener(myListenter);
         locationService.start();
 
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
                 GeoCoder geoCoder = GeoCoder.newInstance();
@@ -146,6 +167,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 marker.setZIndex(5);
                 markerLat = latLng.latitude;
                 markerLong = latLng.longitude;
+                eNode = PlanNode.withLocation(latLng);
+                sNode = PlanNode.withLocation(new LatLng(locLatitude,locLongtitude));
+                mSearch.walkingSearch((new WalkingRoutePlanOption())
+                        .from(sNode).to(eNode));
+
                 return true;
             }
         });
@@ -220,6 +246,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
      */
     private void queryBikeList(){
         BmobQuery<BikeInfo> query = new BmobQuery<>();
+        query.setLimit(1000);
         //query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.findObjects(this, new FindListener<BikeInfo>() {
             @Override
@@ -227,9 +254,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
                 List<OverlayOptions> markerList = new ArrayList<OverlayOptions>();
 
+                Log.e("单车总数：",list.size()+"");
                 for(BikeInfo info:list){
 
-                    Log.e("success",(info == null)+"______"+info.toString());
                     LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
                     MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
                     option.animateType(MarkerOptions.MarkerAnimateType.grow);
@@ -251,11 +278,42 @@ public class MainActivity extends Activity implements View.OnClickListener{
     /**
      * 步行路径导航
      */
-    private void searchWarkingRoute(){
-
-       BMapManager mMapManager = null;
+    @Override
+    public void onGetWalkingRouteResult(WalkingRouteResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this,"加载失败",Toast.LENGTH_LONG).show();
+        }
+        if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+            return;
+        }
+        if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+            WalkingRouteOverlay overlay = new WalkingRouteOverlay(baiduMap);
+            overlay.setData(result.getRouteLines().get(0));
+            overlay.addToMap();
+            overlay.zoomToSpan();
+        }
     }
 
+    public void onGetTransitRouteResult(TransitRouteResult var1){
+
+    };
+
+    public void onGetMassTransitRouteResult(MassTransitRouteResult var1){
+
+    };
+
+    public void onGetDrivingRouteResult(DrivingRouteResult var1){
+
+    };
+
+
+    public void onGetIndoorRouteResult(IndoorRouteResult var1){
+
+    };
+
+    public void onGetBikingRouteResult(BikingRouteResult var1){
+
+    };
 
 
 
@@ -344,6 +402,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     protected void onDestroy() {
 
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        mSearch.destroy();
         locationService.stop();
         baiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();

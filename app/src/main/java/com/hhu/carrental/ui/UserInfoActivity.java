@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,9 +34,11 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     private double latitude;
     private double longitude;
     private User user;
+    private LocationService locationService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         userManager = BmobUserManager.getInstance(this);
         setContentView(R.layout.activity_user_info);
         initView();
@@ -52,6 +55,11 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
 
         rentAmount = (RelativeLayout)findViewById(R.id.layout_rent_amoutbike);
         rentAmount.setOnClickListener(this);
+
+        BDLocationListener myListenter = new MyLocationListenner();
+        locationService = new LocationService(getApplicationContext());
+        locationService.registerListener(myListenter);
+        locationService.start();
     }
 
     public void onClick(View v){
@@ -67,6 +75,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
             case R.id.layout_rent_amoutbike:
                 rentAmoutBike();
                 startActivity(new Intent(this,MainActivity.class));
+                locationService.stop();
                 finish();
                 break;
             default:
@@ -75,52 +84,65 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     }
 
     private void rentAmoutBike(){
-        LocationService locationService;
-        BDLocationListener myListenter = new MyLocationListenner();
-        locationService = new LocationService(getApplicationContext());
-        locationService.registerListener(myListenter);
-        locationService.start();
+
         BikeInfo bikeInfo = null;
         BmobGeoPoint location = null;
         double random0=0.0,random1 = 0.0;
+        double varlon,varlat;
         for(int i =0;i<30;i++){
-            random0 = (Math.random()/100000)*400;
-            random1 = (Math.random()/100000)*400;
+            random0 = (Math.random()/100000)*1000;
+            random1 = (Math.random()/100000)*1000;
             random0 = Double.parseDouble(String .format("%.6f",random0));
             random1 = Double.parseDouble(String .format("%.6f",random1));
+            varlon = longitude;
+            varlat = latitude;
+            Log.e("随机数：","random0:"+random0+"random1:"+random1+"longitude:"+longitude+"latitude:"+latitude);
             switch(i%10){
                 case 1:
                 case 2:
                 case 3:
-                    location = new BmobGeoPoint(longitude-random0,latitude-random1);
+                    varlon = varlon-random0;
+                    varlat = varlat-random1;
+                    //location = new BmobGeoPoint(longitude-random0,latitude-random1);
                     break;
                 case 4:
                 case 5:
-                    location = new BmobGeoPoint(longitude+random0,latitude-random1);
+                    varlon = varlon+random0;
+                    varlat = varlat-random1;
+                    //location = new BmobGeoPoint(longitude+random0,latitude-random1);
                     break;
                 case 7:
                 case 8:
-                    location = new BmobGeoPoint(longitude-random0,latitude+random1);
+                    varlon = varlon-random0;
+                    varlat = varlat+random1;
+                    //location = new BmobGeoPoint(longitude-random0,latitude+random1);
                     break;
                 default:
-                    location = new BmobGeoPoint(longitude+random0,latitude+random1);
+                    varlon = varlon+random0;
+                    varlat = varlat+random1;
+                    //location = new BmobGeoPoint(longitude+random0,latitude+random1);
                     break;
             }
-            bikeInfo = new BikeInfo("123456",location,user,"110","山地车","我是一辆单车","20170506");
-            bikeInfo.save(this,new SaveListener(){
-                @Override
-                public void onSuccess() {
-                    Log.e("出租成功出租成功出租成功","----");
-                }
+            Log.e("坐标","varlon:"+varlon+"varlat:"+varlat);
+            if(varlon >100&&varlat>10){
+                location = new BmobGeoPoint(varlon,varlat);
+                bikeInfo = new BikeInfo("123456",location,user,"110","山地车","我是一辆单车","20170506");
+                bikeInfo.save(this,new SaveListener(){
+                    @Override
+                    public void onSuccess() {
+                        Log.e("出租成功出租成功出租成功","----");
+                    }
 
-                @Override
-                public void onFailure(int i, String s) {
-                    Log.e("出租失败出租失败出租失败",i+s);
-                }
-            });
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Log.e("出租失败出租失败出租失败",i+s);
+                    }
+                });
+            }
+
         }
 
-        locationService.stop();
+
 
     }
 
@@ -135,6 +157,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
             if (location == null ) {
                 return;
             }
+            //Log.e("location","notnull");
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
@@ -146,7 +169,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     }
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
+        locationService.stop();
 
     }
     @Override

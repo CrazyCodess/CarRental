@@ -31,6 +31,7 @@
     <string name="hire">租用</string>
     <string name="logout">退出登陆</string>
     <string name="rent_amount_bike">出租大量单车</string>
+    <string name="route_record">我的行程</string>
     <string name="title_activity_hire">HireActivity</string>
     <string name="bike_info">单车信息</string>
     <string name="bike_type">单车类型</string>
