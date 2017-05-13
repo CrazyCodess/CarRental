@@ -46,5 +46,6 @@
     <string name="hire_cost">预计费用</string>
     <string name="distance">距离起始位置</string>
     <string name="walk_time">步行时间</string>
+    <string name="bike_owner">所属车主</string>
 
 </resources>

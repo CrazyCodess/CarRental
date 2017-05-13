@@ -25,6 +25,7 @@ import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.bean.User;
 import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.service.LocationService;
+import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -62,6 +63,7 @@ public class RentOutActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         userManager = BmobUserManager.getInstance(this);
         setContentView(R.layout.activity_rent_out);
         initView();

@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/shape_top">
+        android:background="@color/color_title">
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -34,171 +34,197 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/userinfo_back"
-        >
-    <TextView
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:text="@string/bike_info"
-        android:textColor="@color/black_font"
-        android:layout_height="@dimen/base_action_bar_height"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:textSize="@dimen/title_size"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_line_width_2"
-        android:background="@drawable/base_horizontal_line" >
-    </View>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/bike_type"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            />
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center_vertical"
+            android:layout_height="@dimen/base_action_bar_height"
+            android:layout_margin="@dimen/activity_vertical_margin"
             android:gravity="center"
-            android:id="@+id/bike_t"
-            />
-    </LinearLayout>
+            android:text="@string/bike_info"
+            android:textColor="@color/black_font"
+            android:textSize="@dimen/title_size" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/rentSTime"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            />
-        <TextView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center_vertical"
+            android:layout_height="@dimen/base_line_width_2"
+            android:background="@drawable/base_horizontal_line"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/bike_owner"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bike_owner"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/bike_type"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bike_t"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/rentSTime"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/rent_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/hire_time"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/hire_time"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/bike_phone"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bike_con"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/bike_pass"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bike_paw"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/bike_detail"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bike_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/hire_sure"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_action_bar_height"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="@drawable/btn_login_selector"
             android:gravity="center"
-            android:id="@+id/rent_start_time"
-            />
+            android:text="@string/hire_sure"
+            android:textColor="@color/base_color_text_white"
+            android:textSize="@dimen/text_size_large" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/hire_time"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:id="@+id/hire_time"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/bike_phone"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:id="@+id/bike_con"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/bike_pass"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:id="@+id/bike_paw"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="100dp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:text="@string/bike_detail"
-            android:textSize="15sp"
-            android:layout_gravity="left"
-            android:textColor="@android:color/darker_gray"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/bike_desc"
-            />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/hire_sure"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_action_bar_height"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:background="@drawable/btn_login_selector"
-        android:gravity="center"
-        android:text="@string/hire_sure"
-        android:textColor="@color/base_color_text_white"
-        android:textSize="@dimen/text_size_large" />
-</LinearLayout>
 </LinearLayout>

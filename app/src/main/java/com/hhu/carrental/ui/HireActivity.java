@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.main.MainActivity;
+import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -20,7 +21,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
 
     private String bikeLat;
     private String bikeLon;
-    private TextView biketype,hiretime,bikephone,bikePwd,bikedetail,rentSTime;
+    private TextView biketype,hiretime,bikephone,bikePwd,bikedetail,rentSTime,bikeOwener;
     private BikeInfo bikeInfo;
     private Button hireSure;
     private ImageButton back;
@@ -28,6 +29,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         setContentView(R.layout.activity_hire);
         init();
     }
@@ -38,6 +40,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
         Intent intent = getIntent();
         bikeInfo = (BikeInfo)intent.getSerializableExtra("bikeInfo");
         biketype = (TextView)findViewById(R.id.bike_t);
+        bikeOwener = (TextView)findViewById(R.id.bike_owner);
         hireSure = (Button)findViewById(R.id.hire_sure);
         hiretime = (TextView)findViewById(R.id.hire_time);
         rentSTime = (TextView)findViewById(R.id.rent_start_time);
@@ -50,6 +53,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
         bikePwd.setText(bikeInfo.getUnlockPass());
         bikedetail.setText(bikeInfo.getBikeDetail());
         rentSTime.setText(bikeInfo.getCreatedAt());
+        bikeOwener.setText(bikeInfo.getUser().getUsername());
         hireSure.setOnClickListener(this);
     }
 

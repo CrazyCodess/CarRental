@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.User;
 import com.hhu.carrental.main.MainActivity;
+import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.SaveListener;
@@ -34,6 +35,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         userManager = BmobUserManager.getInstance(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         setContentView(R.layout.activity_login);
         initView();
     }

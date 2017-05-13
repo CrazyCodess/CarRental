@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.User;
 import com.hhu.carrental.util.CheckNetwork;
+import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobInstallation;
@@ -37,6 +38,7 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         setContentView(R.layout.activity_register);
         initView();
     }

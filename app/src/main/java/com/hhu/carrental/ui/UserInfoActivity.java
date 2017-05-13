@@ -18,6 +18,7 @@ import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.bean.User;
 import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.service.LocationService;
+import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -37,10 +38,13 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     private User user;
     private LocationService locationService;
     private ImageButton back;
+    private BikeInfo bikeInfo = null;
+    private BmobGeoPoint newlocation = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         userManager = BmobUserManager.getInstance(this);
         setContentView(R.layout.activity_user_info);
         initView();
@@ -92,8 +96,8 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
 
     private void rentAmoutBike(){
 
-        BikeInfo bikeInfo = null;
-        BmobGeoPoint location = null;
+
+
         double random0=0.0,random1 = 0.0;
         double varlon,varlat;
         for(int i =0;i<30;i++){
@@ -132,8 +136,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
             }
             Log.e("坐标","varlon:"+varlon+"varlat:"+varlat);
             if(varlon >100&&varlat>10){
-                location = new BmobGeoPoint(varlon,varlat);
-                bikeInfo = new BikeInfo("123456",location,user,"110","山地车","我是一辆单车","20170506");
+                newlocation = new BmobGeoPoint(varlon,varlat);
+                //bikeInfo = new BikeInfo("123456",newlocation,user,"110","山地车","我是一辆单车","20170506");
+                generateBikeInfo();
                 bikeInfo.save(this,new SaveListener(){
                     @Override
                     public void onSuccess() {
@@ -174,6 +179,31 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
 
         }
     }
+
+    private void generateBikeInfo(){
+        int i,k,l,d;
+        long j;
+        String[] type ={"通勤自行车","旅行自行车","山地自行车","公路自行车","小轮车","死飞车","折叠自行车","速降山地车","越野公路车"
+                ,"计时赛自行车","场地赛自行车","斜躺车","协力车","淑女自行车","亲子自行车","水上自行车","海滩自行车"};//单车类型数组
+        String[] details={"绿色出行就选共享单车","听说骑共享单车的人都脱单了","让自行车回归城市","生命在于运动,运动就骑共享单车"
+                ,"我要让城市变得更美好","用单车温暖你的城市","今天你骑共享单车了吗","先定个小目标，骑100天共享单车"
+                ,};//8 标语数组
+        i = (int)((Math.random()*100)/6.0);//随机生成单车类型下标
+        j = (long)(Math.random()*Math.pow(10,10));//随机生成电话号码
+        k = (int)(Math.random()*1000000);//随机生成锁的密码
+        l = (int)(Math.random()*500)+10;//随机生成出租时间
+        d = (int)(Math.random()*10/1.43);//随机生成口号下标
+
+        String rentTime;
+        if(l/60>0){
+            rentTime = l/60+"小时"+(l-(l/60)*60)+"分钟";
+        }else {
+            rentTime = l+"分钟";
+        }
+        bikeInfo = new BikeInfo(k+"",newlocation,user,"1"+j+"",type[i],details[d],rentTime);
+
+    }
+
     @Override
     protected void onDestroy() {
 

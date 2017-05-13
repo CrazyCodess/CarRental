@@ -55,6 +55,7 @@ import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
+import com.hhu.carrental.util.StatusBarUtils;
 import com.hhu.carrental.util.WalkingRouteOverlay;
 
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         SDKInitializer.initialize(getApplicationContext());
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
@@ -192,6 +194,8 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 String bql = "select * from BikeInfo where location  near ["+latLng.longitude+","+latLng.latitude+"] max 1 miles";
                 BmobQuery<BikeInfo> bquery = new BmobQuery<BikeInfo>();
                 bquery.setSQL(bql);
+                bquery.setLimit(3);
+                bquery.include("user");
                 //bquery.setPreparedParams(new Object[]{latLng.longitude,latLng.latitude});
                 bquery.doSQLQuery(MainActivity.this, new SQLQueryListener<BikeInfo>() {
                     @Override
