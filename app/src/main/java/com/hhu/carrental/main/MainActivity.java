@@ -3,6 +3,7 @@ package com.hhu.carrental.main;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,6 +47,7 @@ import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -56,10 +58,14 @@ import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 import com.hhu.carrental.util.StatusBarUtils;
+import com.hhu.carrental.util.TimeHandler;
 import com.hhu.carrental.util.WalkingRouteOverlay;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobQuery;
@@ -97,8 +103,10 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private BikeInfo bikeInfo;
     private PlanNode sNode  = null,eNode = null;
     private RoutePlanSearch mSearch = null;
-    private TextView distance,contract;
-    private LinearLayout ll1,ll2,ll3;
+    private TextView distance,contract,bikingCost,bikingDistance,bikingTime;
+    private LinearLayout ll1,ll2,ll3,bikingL1,bikingL2;
+    private String hireMsg ;
+    private WalkingRouteOverlay walkingRouteOverlay;
 //    private PlanNode end = new PlanNode();
     //private MK
     @Override
@@ -117,7 +125,38 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
         location();//进行定位
-        if(getIntent().getStringExtra("msg") != null){
+        updateHireUi();
+
+    }
+
+    /**
+     * 更新骑行时间
+     */
+    public void updateCurrentTime(){
+        //TODO 把显示系统时间改成骑行的时间
+        Date now = new Date();
+        DateFormat format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+                DateFormat.MEDIUM, Locale.CHINA);
+        bikingTime.setText(format.format(now));
+    }
+
+    /**
+     * 更新租用界面
+     */
+    private void updateHireUi(){
+
+        if((hireMsg=getIntent().getStringExtra("msg") )!= null){
+            bikingL1 = (LinearLayout)findViewById(R.id.hire_linear1);
+            bikingL2 = (LinearLayout)findViewById(R.id.hire_linear2);
+            ll2.setVisibility(View.GONE);
+            ll3.setVisibility(View.GONE);
+            bikingL1.setVisibility(View.VISIBLE);
+            bikingL2.setVisibility(View.VISIBLE);
+            bikingCost = (TextView)findViewById(R.id.biking_cost);
+            bikingTime = (TextView)findViewById(R.id.biking_time);
+            bikingDistance = (TextView)findViewById(R.id.biking_distance);
+            Handler handler = new TimeHandler(this);
+            handler.sendEmptyMessageDelayed(1,500);
             Log.e("hire","返回返回");
             baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                     LocationMode.NORMAL,true,mCurrentMarker
@@ -127,34 +166,32 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             hireFinish.setVisibility(View.VISIBLE);
             hireLayout.setVisibility(View.VISIBLE);
             baiduMap.setOnMapClickListener(null);
-/*
-            setAddress(new LatLng(locLatitude,locLongtitude));
-            //Log.e("Adress",city);
-            if(loccity != null&&loccity != ""){
+            //setAddress(new LatLng(locLatitude,locLongtitude));
+            //Log.e("Adress----",loccity+locLatitude+"*"+locLongtitude);
+ /*           if(loccity != null&&loccity != ""){
                 markerLocation.setText(loccity);
             }*/
-            ll1.setVisibility(View.GONE);
-            ll2.setVisibility(View.GONE);
-            ll3.setVisibility(View.GONE);
+            //ll1.setVisibility(View.GONE);
+            //ll2.setVisibility(View.GONE);
+            //ll3.setVisibility(View.GONE);
 
         }
         else{
             queryBikeList();
         }
-
     }
-
 
     /**
      * 初始化地图
      */
     private void initmap(){
+        hireMsg = null;
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
 
-        ll1 = (LinearLayout)findViewById(R.id.linearLayout2);
-        ll2 = (LinearLayout)findViewById(R.id.linearLayout3);
-        ll3 = (LinearLayout)findViewById(R.id.linearLayout);
+        ll2 = (LinearLayout)findViewById(R.id.linearLayout2);
+        ll3 = (LinearLayout)findViewById(R.id.linearLayout3);
+        ll1 = (LinearLayout)findViewById(R.id.linearLayout);
         distance = (TextView)findViewById(R.id.distance);
         contract = (TextView)findViewById(R.id.contract);
         locbtn = (ImageView)findViewById(R.id.loc_btn);
@@ -171,6 +208,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         baiduMap.setMyLocationEnabled(true);
         baiduMap.setBuildingsEnabled(true);
         baiduMap.setMaxAndMinZoomLevel(3,21);
+        walkingRouteOverlay = new WalkingRouteOverlay(baiduMap);
         mLocMode = LocationMode.NORMAL;
 
         slidebtn = (ImageButton)findViewById(R.id.slide_btn);
@@ -184,18 +222,17 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
             public boolean onMarkerClick(final Marker marker) {
+                walkingRouteOverlay.removeFromMap();
                 //mSearch.destroy();
                 LatLng latLng =  marker.getPosition();
-
                 setAddress(latLng);
+                markerLocation.setText(city);
                 marker.setToTop();
-
-
                 String bql = "select * from BikeInfo where location  near ["+latLng.longitude+","+latLng.latitude+"] max 1 miles";
                 BmobQuery<BikeInfo> bquery = new BmobQuery<BikeInfo>();
                 bquery.setSQL(bql);
                 bquery.setLimit(3);
-                bquery.include("user");
+                bquery.include("user[username]");
                 //bquery.setPreparedParams(new Object[]{latLng.longitude,latLng.latitude});
                 bquery.doSQLQuery(MainActivity.this, new SQLQueryListener<BikeInfo>() {
                     @Override
@@ -204,7 +241,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                             List<BikeInfo> list = (List<BikeInfo>) bmobQueryResult.getResults();
                             if(list!=null && list.size()>0){
                                 bikeInfo = list.get(0);
-                                Log.e("BikeInfo:",bikeInfo.toString());
+                                //Log.e("BikeInfo:",bikeInfo.toString());
                             }else{
                                 Log.e("smile", "查询成功，无数据返回");
                             }
@@ -218,7 +255,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
 
                 hireLayout.setVisibility(View.VISIBLE);
-                markerLocation.setText(city);
+
                 marker.setZIndex(5);
                 markerLat = latLng.latitude;
                 markerLong = latLng.longitude;
@@ -298,6 +335,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             baiduMap.setMyLocationData(locData);
             locLatitude = location.getLatitude();
             locLongtitude = location.getLongitude();
+            if(hireMsg != null&&!hireMsg .equals("")){
+                setAddress(new LatLng(locLatitude,locLongtitude));
+                markerLocation.setText(loccity);
+                ll1.setVisibility(View.VISIBLE);
+            }
             if(isFirstLoc){
                 isFirstLoc = false;
                 LatLng mll = new LatLng(locLatitude,locLongtitude);
@@ -366,10 +408,13 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             return;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-            WalkingRouteOverlay overlay = new WalkingRouteOverlay(baiduMap);
-            overlay.setData(result.getRouteLines().get(0));
-            overlay.addToMap();
-            overlay.zoomToSpan();
+
+            for(WalkingRouteLine line:result.getRouteLines()){
+                walkingRouteOverlay.setData(line);
+            }
+
+            walkingRouteOverlay.addToMap();
+            walkingRouteOverlay.zoomToSpan();
         }
     }
 

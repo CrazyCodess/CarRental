@@ -56,4 +56,15 @@ public class User extends BmobChatUser {
     public void setIncredits(Integer incredits) {
         this.incredits = incredits;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "school='" + school + '\'' +
+                ", sex=" + sex +
+                ", date='" + date + '\'' +
+                ", incredits=" + incredits +
+                ", bikingRoute=" + bikingRoute +
+                '}';
+    }
 }

@@ -9,12 +9,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
+import com.hhu.carrental.bean.User;
 import com.hhu.carrental.main.MainActivity;
 import com.hhu.carrental.util.StatusBarUtils;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class HireActivity extends Activity implements View.OnClickListener{
@@ -31,16 +35,34 @@ public class HireActivity extends Activity implements View.OnClickListener{
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         setContentView(R.layout.activity_hire);
+        Intent intent = getIntent();
+        bikeInfo = (BikeInfo)intent.getSerializableExtra("bikeInfo");
+
+        bikeOwener = (TextView)findViewById(R.id.bike_owner);
+        BmobQuery<User> query = new BmobQuery<>();
+        query.getObject(this,bikeInfo.getUser().getObjectId(),new  GetListener<User>() {
+            @Override
+            public void onSuccess(User object) {
+                // TODO Auto-generated method stub
+                bikeOwener.setText(object.getUsername());
+            }
+
+            @Override
+            public void onFailure(int code, String arg0) {
+                // TODO Auto-generated method stub
+                Toast.makeText(HireActivity.this,"查询失败",Toast.LENGTH_LONG).show();
+            }
+        });
+
         init();
     }
 
     private void init(){
         back = (ImageButton)findViewById(R.id.hire_back);
         back.setOnClickListener(this);
-        Intent intent = getIntent();
-        bikeInfo = (BikeInfo)intent.getSerializableExtra("bikeInfo");
+
         biketype = (TextView)findViewById(R.id.bike_t);
-        bikeOwener = (TextView)findViewById(R.id.bike_owner);
+
         hireSure = (Button)findViewById(R.id.hire_sure);
         hiretime = (TextView)findViewById(R.id.hire_time);
         rentSTime = (TextView)findViewById(R.id.rent_start_time);
@@ -53,7 +75,9 @@ public class HireActivity extends Activity implements View.OnClickListener{
         bikePwd.setText(bikeInfo.getUnlockPass());
         bikedetail.setText(bikeInfo.getBikeDetail());
         rentSTime.setText(bikeInfo.getCreatedAt());
-        bikeOwener.setText(bikeInfo.getUser().getUsername());
+
+        //bikeOwener.setText(bikeInfo.getUser().getUsername());
+        ///Log.e("bikeInfo:====",(bikeInfo.getUser()==null)+"*"+bikeInfo.getUser().getUsername()+"*"+bikeInfo.getUser().getObjectId());
         hireSure.setOnClickListener(this);
     }
 

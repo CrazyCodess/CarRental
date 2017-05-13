@@ -47,5 +47,8 @@
     <string name="distance">距离起始位置</string>
     <string name="walk_time">步行时间</string>
     <string name="bike_owner">所属车主</string>
+    <string name="biking_cost">产生付费</string>
+    <string name="biking_distance">骑行路程</string>
+    <string name="biking_time">骑行时间</string>
 
 </resources>
