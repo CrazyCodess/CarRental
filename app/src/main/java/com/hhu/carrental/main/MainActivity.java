@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -50,15 +51,14 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.baidu.mapapi.utils.DistanceUtil;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
 import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
+import com.hhu.carrental.util.FormatHandler;
 import com.hhu.carrental.util.StatusBarUtils;
-import com.hhu.carrental.util.TimeHandler;
 import com.hhu.carrental.util.WalkingRouteOverlay;
 
 import java.text.DateFormat;
@@ -66,6 +66,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobQuery;
@@ -73,6 +75,8 @@ import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
+
+import static com.baidu.mapapi.utils.DistanceUtil.getDistance;
 
 
 /**
@@ -107,6 +111,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private LinearLayout ll1,ll2,ll3,bikingL1,bikingL2;
     private String hireMsg ;
     private WalkingRouteOverlay walkingRouteOverlay;
+    private Timer timer;
+    private long currentTime;
+    private int totalDistance;
+    private float mCurrentX;
+
 //    private PlanNode end = new PlanNode();
     //private MK
     @Override
@@ -146,17 +155,13 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private void updateHireUi(){
 
         if((hireMsg=getIntent().getStringExtra("msg") )!= null){
-            bikingL1 = (LinearLayout)findViewById(R.id.hire_linear1);
-            bikingL2 = (LinearLayout)findViewById(R.id.hire_linear2);
             ll2.setVisibility(View.GONE);
             ll3.setVisibility(View.GONE);
             bikingL1.setVisibility(View.VISIBLE);
             bikingL2.setVisibility(View.VISIBLE);
-            bikingCost = (TextView)findViewById(R.id.biking_cost);
-            bikingTime = (TextView)findViewById(R.id.biking_time);
-            bikingDistance = (TextView)findViewById(R.id.biking_distance);
-            Handler handler = new TimeHandler(this);
-            handler.sendEmptyMessageDelayed(1,500);
+
+//            Handler handler = new TimeHandler(this);
+//            handler.sendEmptyMessageDelayed(1,500);
             Log.e("hire","返回返回");
             baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                     LocationMode.NORMAL,true,mCurrentMarker
@@ -174,6 +179,24 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             //ll1.setVisibility(View.GONE);
             //ll2.setVisibility(View.GONE);
             //ll3.setVisibility(View.GONE);
+            //final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss",Locale.CHINA);
+            currentTime = System.currentTimeMillis();
+            final Handler myHandler = new Handler(){
+                @Override
+                public void handleMessage(Message msg){
+                    if (msg.what == 0x2333){
+                            bikingTime.setText(FormatHandler.timeMillisTotime(System.currentTimeMillis()-currentTime));
+                    }
+                }
+            };
+
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    myHandler.sendEmptyMessage(0x2333);
+                }
+            },0,1000);
 
         }
         else{
@@ -186,9 +209,14 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
      */
     private void initmap(){
         hireMsg = null;
+        totalDistance = 0;
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
-
+        bikingL1 = (LinearLayout)findViewById(R.id.hire_linear1);
+        bikingL2 = (LinearLayout)findViewById(R.id.hire_linear2);
+        bikingCost = (TextView)findViewById(R.id.biking_cost);
+        bikingTime = (TextView)findViewById(R.id.biking_time);
+        bikingDistance = (TextView)findViewById(R.id.biking_distance);
         ll2 = (LinearLayout)findViewById(R.id.linearLayout2);
         ll3 = (LinearLayout)findViewById(R.id.linearLayout3);
         ll1 = (LinearLayout)findViewById(R.id.linearLayout);
@@ -217,6 +245,9 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
         locationService.mStart();
+
+
+
 
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
@@ -255,7 +286,8 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
 
                 hireLayout.setVisibility(View.VISIBLE);
-
+                bikingL1.setVisibility(View.GONE);
+                bikingL2.setVisibility(View.GONE);
                 marker.setZIndex(5);
                 markerLat = latLng.latitude;
                 markerLong = latLng.longitude;
@@ -263,7 +295,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 sNode = PlanNode.withLocation(new LatLng(locLatitude,locLongtitude));
                 mSearch.walkingSearch((new WalkingRoutePlanOption())
                         .from(sNode).to(eNode));
-                double time = DistanceUtil.getDistance(new LatLng(locLatitude,locLongtitude),latLng)+0.5;
+                double time = getDistance(new LatLng(locLatitude,locLongtitude),latLng)+0.5;
                 distance.setText((int)time+"米");
 
 
@@ -275,6 +307,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         baiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                walkingRouteOverlay.removeFromMap();
                 hireLayout.setVisibility(View.GONE);
             }
 
@@ -339,6 +372,26 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 setAddress(new LatLng(locLatitude,locLongtitude));
                 markerLocation.setText(loccity);
                 ll1.setVisibility(View.VISIBLE);
+  /*              final BmobGeoPoint myLoc = (BmobGeoPoint) getIntent().getSerializableExtra("loc");
+
+                final Handler disHandler = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg){
+                        if (msg.what == 0x1234){
+                            long distance = (long)(DistanceUtil.getDistance(new LatLng(myLoc.getLatitude(),myLoc.getLongitude()),new LatLng(locLatitude,locLongtitude))+0.5);
+                            bikingDistance.setText(FormatHandler.formatDistance(distance));
+                        }
+                    }
+                };
+
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        disHandler.sendEmptyMessage(0x1234);
+                    }
+                },0,1000);*/
+
             }
             if(isFirstLoc){
                 isFirstLoc = false;
@@ -347,6 +400,8 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 builder.target(mll).zoom(18.0f);
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
+
+
 
 
         }
@@ -445,6 +500,9 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         BmobUserManager userManager = null;
         switch (v.getId()){
             case R.id.loc_btn:
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(new LatLng(locLatitude,locLongtitude)).zoom(18.0f);
+                baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                 switch (mLocMode){
                     case NORMAL://处于正常模式
                         mLocMode = LocationMode.FOLLOWING;
@@ -527,6 +585,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     protected void onDestroy() {
 
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        if(timer != null)timer.cancel();
         mSearch.destroy();
         locationService.stop();
         baiduMap.setMyLocationEnabled(false);
@@ -541,11 +600,17 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
         mapView.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mapView.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("gaolei", "MainActivity------------onStart------------------");
     }
 
 

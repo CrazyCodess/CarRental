@@ -9,25 +9,28 @@
         android:layout_height="50dp"
         android:background="@color/color_title">
         <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="#00000000"
             android:id="@+id/userinfo_back"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/back"
-            android:layout_alignParentTop="true" />
+            android:layout_centerVertical="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:clickable="true"
+            android:src="@mipmap/return_icon"
+            />
         <TextView
-            android:id="@+id/rent_back"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
-            android:paddingTop="5dp"
-            android:text="@string/app_name"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:layout_centerInParent="true"
+            android:text="@string/user_info"
+            android:textColor="@color/base_color_text_white"
+            android:textSize="16sp" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
@@ -45,7 +48,7 @@
             android:orientation="vertical"
             android:layout_weight="0.99">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,38 +59,38 @@
                 android:layout_marginTop="25dp"
                 android:text="@string/app_name"
                 android:textColor="@color/base_color_text_white"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large" />-->
 
             <ImageView
                 android:id="@+id/mobie_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/app_name"
-                android:layout_below="@+id/app_name"
-                android:layout_marginTop="35dp"
-                android:src="@drawable/avator" />
+                android:layout_marginTop="48dp"
+                android:src="@drawable/avator"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/app_name"
-                android:layout_below="@+id/mobie_btn"
-                android:layout_marginTop="36dp"
+                android:text="18351962086"
+                android:layout_marginTop="29dp"
                 android:textColor="@color/base_color_text_white"
-                android:textSize="30sp" />
+                android:textSize="16sp"
+                android:layout_below="@+id/mobie_btn"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
 
 
 
 
-        <View
-            android:id="@+id/view2"
+        <View  android:layout_height="1px"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:background="@color/color_line"
+
+            />
 
         <RelativeLayout
             android:id="@+id/layout_rent_bike"
@@ -110,15 +113,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/text_right"
+                android:drawableRight="@mipmap/arrow_right"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
-        <View
+        <View  android:layout_height="1px"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:background="@color/color_line"
+
+            />
 
         <RelativeLayout
             android:id="@+id/layout_rent_amoutbike"
@@ -141,15 +144,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/text_right"
+                android:drawableRight="@mipmap/arrow_right"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
-        <View
+        <View  android:layout_height="1px"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:background="@color/color_line"
+
+            />
 
 
         <RelativeLayout
@@ -173,15 +176,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/text_right"
+                android:drawableRight="@mipmap/arrow_right"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
-        <View
+        <View  android:layout_height="1px"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:background="@color/color_line"
+
+            />
 
         <RelativeLayout
             android:id="@+id/user_setting"
@@ -204,16 +207,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/text_right"
+                android:drawableRight="@mipmap/arrow_right"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
-
-        <View
+        <View  android:layout_height="1px"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_line_width_2"
-            android:background="@drawable/base_horizontal_line" >
-        </View>
+            android:background="@color/color_line"
+
+            />
         <Button
             android:id="@+id/btn_logout"
             style="@style/Smile.Button.logout"
