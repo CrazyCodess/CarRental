@@ -46,6 +46,14 @@
             android:background="@drawable/input_bg"
             android:orientation="vertical" >
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" >
+
+
             <EditText
                 android:id="@+id/et_username"
                 android:layout_width="match_parent"
@@ -62,10 +70,34 @@
                 android:textColorHint="#ffdddddd"
                 android:textSize="@dimen/text_size_large"/>
 
+
+                <ImageView
+                    android:id="@+id/clear_regisname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:src="@mipmap/clear_text"
+                    android:visibility="gone"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/base_horization_line" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" >
 
             <EditText
                 android:id="@+id/et_password"
@@ -81,10 +113,33 @@
                 android:textColorHint="#ffdddddd"
                 android:textSize="@dimen/text_size_large"/>
 
+                <ImageView
+                    android:id="@+id/clear_firstpass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:src="@mipmap/clear_text"
+                    android:visibility="gone"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+
+            </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/base_horization_line" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" >
 
             <EditText
                 android:id="@+id/et_SurePassword"
@@ -100,10 +155,31 @@
                 android:textColorHint="#ffdddddd"
                 android:textSize="@dimen/text_size_large"/>
 
+
+                <ImageView
+                    android:id="@+id/clear_confirmpass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:src="@mipmap/clear_text"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/base_horization_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" >
 
             <EditText
                 android:id="@+id/et_email"
@@ -117,6 +193,22 @@
                 android:paddingRight="0dp"
                 android:textColorHint="#ffdddddd"
                 android:textSize="@dimen/text_size_large"/>
+
+
+                <ImageView
+                    android:id="@+id/clear_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:src="@mipmap/clear_text"
+                    android:visibility="gone"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
         </LinearLayout>
 
 

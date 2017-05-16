@@ -394,8 +394,10 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
             }
             if(isFirstLoc){
+
                 isFirstLoc = false;
                 LatLng mll = new LatLng(locLatitude,locLongtitude);
+                setAddress(mll);
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(mll).zoom(18.0f);
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));

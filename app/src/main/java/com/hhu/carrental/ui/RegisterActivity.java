@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hhu.carrental.R;
@@ -34,6 +37,8 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
     private Button	btn_cancel;
     private BmobUserManager userManager;
     private ImageButton back;
+
+    private ImageView clearRegisname,clearFirstname,clearConfirmname,clearEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +51,114 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
     private void initView(){
         back = (ImageButton)findViewById(R.id.regis_back);
         back.setOnClickListener(this);
+        clearRegisname = (ImageView)findViewById(R.id.clear_regisname);
+        clearFirstname = (ImageView)findViewById(R.id.clear_firstpass);
+        clearConfirmname = (ImageView)findViewById(R.id.clear_confirmpass);
+        clearEmail = (ImageView)findViewById(R.id.clear_email);
         eUserName = (EditText)findViewById(R.id.et_username);
         eUserPassword= (EditText)findViewById(R.id.et_password);
         mUserPassword = (EditText)findViewById(R.id.et_SurePassword);
         eEmail = (EditText) findViewById(R.id.et_email);
         btn_register = (Button)findViewById(R.id.btn_register_2);
         btn_cancel = (Button)findViewById(R.id.btn_cancel);
+        clearRegisname.setOnClickListener(this);
+        clearFirstname.setOnClickListener(this);
+        clearConfirmname.setOnClickListener(this);
+        clearEmail.setOnClickListener(this);
         btn_register.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         userManager = BmobUserManager.getInstance(this);
+        addTextListener();
+    }
+
+    private void addTextListener(){
+        eUserName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearRegisname.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearRegisname.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        eUserPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearFirstname.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearFirstname.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        mUserPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearConfirmname.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearConfirmname.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        eEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearEmail.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearEmail.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void onClick(View v){
@@ -65,6 +169,19 @@ public class RegisterActivity extends Activity  implements View.OnClickListener 
         String email = eEmail.getText().toString();
         boolean isNetConnected = CheckNetwork.isNetworkAvailable(this);
         switch (v.getId()){
+            case R.id.clear_regisname:
+                eUserName.setText(null);
+                break;
+            case R.id.clear_firstpass:
+                eUserPassword.setText(null);
+                break;
+            case R.id.clear_confirmpass:
+                mUserPassword.setText(null);
+                break;
+            case R.id.clear_email:
+                eEmail.setText(null);
+                break;
+
             case R.id.regis_back:
                 finish();
                 break;

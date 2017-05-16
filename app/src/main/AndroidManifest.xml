@@ -67,7 +67,11 @@
         <activity android:name=".ui.RentOutActivity" />
         <activity
             android:name=".ui.HireActivity"
-            android:label="@string/title_activity_hire"></activity>
+            android:label="@string/title_activity_hire" />
+        <activity android:name=".ui.UserSettingActivity" />
+        <activity
+            android:name=".ui.ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password"></activity>
     </application>
 
 </manifest>

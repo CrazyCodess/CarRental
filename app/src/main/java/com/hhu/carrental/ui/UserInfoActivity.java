@@ -25,14 +25,14 @@ import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
- * 个人信息
+ * 个人中心
  */
 public class UserInfoActivity extends Activity implements View.OnClickListener{
 
     private BmobUserManager userManager;
     private TextView nametv;
     private Button logout;
-    private RelativeLayout rentOut,rentAmount;
+    private RelativeLayout rentOut,rentAmount,userSetting;
     private double latitude;
     private double longitude;
     private User user;
@@ -53,6 +53,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
     private void initView(){
         nametv = (TextView) findViewById(R.id.username);
         logout = (Button) findViewById(R.id.btn_logout);
+        userSetting = (RelativeLayout)findViewById(R.id.user_setting);
         back = (ImageButton) findViewById(R.id.userinfo_back);
         rentOut = (RelativeLayout) findViewById(R.id.layout_rent_bike);
         user = userManager.getCurrentUser(User.class);
@@ -63,7 +64,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
         rentAmount = (RelativeLayout)findViewById(R.id.layout_rent_amoutbike);
         rentAmount.setOnClickListener(this);
         back.setOnClickListener(this);
-
+        userSetting.setOnClickListener(this);
         BDLocationListener myListenter = new MyLocationListenner();
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
@@ -88,6 +89,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.userinfo_back:
                 finish();
+                break;
+            case R.id.user_setting:
+                startActivity(new Intent(this,UserSettingActivity.class));
                 break;
             default:
                 break;

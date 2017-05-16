@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hhu.carrental.R;
@@ -30,6 +34,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
     private Button regisbtn;
     private ImageButton back;
     private BmobUserManager userManager;
+    private TextView forgetPass;
+    private ImageView clearUsername,clearPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +49,62 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
     private void initView(){
         userName = (EditText)findViewById(R.id.et_username);
         password = (EditText)findViewById(R.id.et_password);
+        forgetPass = (TextView)findViewById(R.id.foget_password);
+        clearUsername = (ImageView)findViewById(R.id.clear_username);
+        clearPassword = (ImageView)findViewById(R.id.clear_password);
         loginbtn = (Button)findViewById(R.id.btn_login);
         back = (ImageButton)findViewById(R.id.login_back);
         back.setOnClickListener(this);
         regisbtn = (Button)findViewById(R.id.btn_register_1);
+        clearUsername.setOnClickListener(this);
+        clearPassword.setOnClickListener(this);
         regisbtn.setOnClickListener(this);
         loginbtn.setOnClickListener(this);
+        forgetPass.setOnClickListener(this);
+        userName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearUsername.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearUsername.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    clearPassword.setVisibility(View.VISIBLE);
+                }
+                else {
+                    clearPassword.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void onClick(View v){
@@ -98,6 +154,15 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
             case R.id.btn_register_1:
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
                 finish();
+                break;
+            case R.id.foget_password:
+                startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
+                break;
+            case R.id.clear_username:
+                userName.setText(null);
+                break;
+            case R.id.clear_password:
+                password.setText(null);
                 break;
         }
     }

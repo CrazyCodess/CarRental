@@ -51,4 +51,12 @@
     <string name="biking_distance">骑行路程</string>
     <string name="biking_time">骑行时间</string>
     <string name="user_info">个人中心</string>
+    <string name="user_setting_info">个人信息</string>
+    <string name="avator">头像</string>
+    <string name="nick_name">昵称</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="get_back_pass">找回密码</string>
+    <string name="forget_hint">请填写您注册所用邮箱，我们将为您的邮箱发送一封修改密码的邮件!</string>
+    <string name="confirm">确定</string>
 </resources>
