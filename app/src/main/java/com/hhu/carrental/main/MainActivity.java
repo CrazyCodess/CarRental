@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -58,6 +59,7 @@ import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 import com.hhu.carrental.util.FormatHandler;
+import com.hhu.carrental.util.MyOrientationListener;
 import com.hhu.carrental.util.StatusBarUtils;
 import com.hhu.carrental.util.WalkingRouteOverlay;
 
@@ -115,7 +117,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private long currentTime;
     private int totalDistance;
     private float mCurrentX;
-
+    private MyOrientationListener myOrientationListener;
 //    private PlanNode end = new PlanNode();
     //private MK
     @Override
@@ -124,13 +126,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         SDKInitializer.initialize(getApplicationContext());
-       // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // 隐藏状态栏
-      /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-       // PermissionManager permiss = PermissionManager.with(this);
-        //permiss.request();
-
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
         location();//进行定位
@@ -244,7 +239,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         hireFinish.setOnClickListener(this);
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
-        locationService.mStart();
+        locationService.start();
 
 
 
@@ -415,7 +410,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
         }
     }
-
 
 
 
@@ -612,8 +606,34 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("gaolei", "MainActivity------------onStart------------------");
+        Log.d("demeiyan", "MainActivity------------onStart------------------");
     }
 
+    @Override
+    protected void onRestart(){
+        Log.d("demeiyan", "MainActivity------------onRestart------------------");
+        super.onRestart();
+        baiduMap.setMyLocationEnabled(true);
+        locationService.start();
+    }
+
+
+    private long exitTime = 0;
+
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            if(System.currentTimeMillis() - exitTime >2000){
+                Toast.makeText(this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }else {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
 
 }

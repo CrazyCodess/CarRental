@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,7 +23,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class HireActivity extends Activity implements View.OnClickListener{
+public class HireActivity extends Activity implements View.OnClickListener ,GestureDetector.OnGestureListener {
 
     private String bikeLat;
     private String bikeLon;
@@ -29,6 +31,46 @@ public class HireActivity extends Activity implements View.OnClickListener{
     private BikeInfo bikeInfo;
     private Button hireSure;
     private ImageButton back;
+    private GestureDetector detector;
+    private final int FLIP_DISTANCE = 50;
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        return detector.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if(e2.getX()-e1.getX()>FLIP_DISTANCE){
+            finish();
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +102,7 @@ public class HireActivity extends Activity implements View.OnClickListener{
     private void init(){
         back = (ImageButton)findViewById(R.id.hire_back);
         back.setOnClickListener(this);
-
+        detector = new GestureDetector(this,this);
         biketype = (TextView)findViewById(R.id.bike_t);
 
         hireSure = (Button)findViewById(R.id.hire_sure);
@@ -111,6 +153,20 @@ public class HireActivity extends Activity implements View.OnClickListener{
             default:
                 break;
         }
+    }
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
 

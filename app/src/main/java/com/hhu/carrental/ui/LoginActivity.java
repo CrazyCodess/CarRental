@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,10 +25,12 @@ import com.hhu.carrental.util.StatusBarUtils;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.SaveListener;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 /**
  * 登陆
  */
-public class LoginActivity extends Activity  implements View.OnClickListener {
+public class LoginActivity extends Activity  implements View.OnClickListener ,GestureDetector.OnGestureListener{
 
     private EditText userName;
     private EditText password;
@@ -36,6 +40,46 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
     private BmobUserManager userManager;
     private TextView forgetPass;
     private ImageView clearUsername,clearPassword;
+    private GestureDetector detector;
+    public final int FLIP_DISTANCE = 50;
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        return detector.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if(e2.getX()-e1.getX()>FLIP_DISTANCE){
+            finish();
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +91,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
     }
 
     private void initView(){
+        detector = new GestureDetector(this,this);
         userName = (EditText)findViewById(R.id.et_username);
         password = (EditText)findViewById(R.id.et_password);
         forgetPass = (TextView)findViewById(R.id.foget_password);
@@ -133,7 +178,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                             if(user.getEmailVerified()){
                                 mpd.setMessage("登陆成功");
                                 mpd.dismiss();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class).setFlags(FLAG_ACTIVITY_CLEAR_TOP));
                                 finish();
                             }else{
                                 mpd.setMessage("请先验证邮箱并激活账号");
@@ -153,7 +198,6 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                 break;
             case R.id.btn_register_1:
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-                finish();
                 break;
             case R.id.foget_password:
                 startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));

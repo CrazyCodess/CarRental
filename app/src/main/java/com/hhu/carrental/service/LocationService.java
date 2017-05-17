@@ -107,6 +107,7 @@ public class LocationService {
         synchronized (objLock) {
             if(client != null && !client.isStarted()){
                 client.start();
+                client.requestLocation();
             }
         }
     }
