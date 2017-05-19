@@ -2,6 +2,10 @@ package com.hhu.carrental.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,12 +58,14 @@ import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.BikeInfo;
+import com.hhu.carrental.bean.RouteInfo;
+import com.hhu.carrental.bean.RoutePoint;
+import com.hhu.carrental.bean.User;
 import com.hhu.carrental.service.LocationService;
 import com.hhu.carrental.ui.HireActivity;
 import com.hhu.carrental.ui.LoginActivity;
 import com.hhu.carrental.ui.UserInfoActivity;
 import com.hhu.carrental.util.FormatHandler;
-import com.hhu.carrental.util.MyOrientationListener;
 import com.hhu.carrental.util.StatusBarUtils;
 import com.hhu.carrental.util.WalkingRouteOverlay;
 
@@ -77,6 +83,7 @@ import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
+import cn.bmob.v3.listener.SaveListener;
 
 import static com.baidu.mapapi.utils.DistanceUtil.getDistance;
 
@@ -84,7 +91,10 @@ import static com.baidu.mapapi.utils.DistanceUtil.getDistance;
 /**
  * 主界面显示
  */
-public class MainActivity extends Activity implements View.OnClickListener,OnGetRoutePlanResultListener {
+public class MainActivity extends Activity implements View.OnClickListener,OnGetRoutePlanResultListener
+        ,SensorEventListener {
+
+    private BmobUserManager userManager = null;
 
     private MapView mapView = null;
     private LocationMode mLocMode;
@@ -114,28 +124,31 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private String hireMsg ;
     private WalkingRouteOverlay walkingRouteOverlay;
     private Timer timer;
-    private long currentTime;
-    private int totalDistance;
+    private long beginTime,totalTime;
+    private double totalDistance;
+    private  float totalPrice,lastPrice;
     private float mCurrentX;
-    private MyOrientationListener myOrientationListener;
+    private SensorManager sensorManager;
+    private ArrayList<RoutePoint> routePointList;
+//    private MyOrientationListener myOrientationListener;
 //    private PlanNode end = new PlanNode();
     //private MK
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
+       StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
-        location();//进行定位
         updateHireUi();
 
     }
-
     /**
-     * 更新骑行时间
+     *   更新骑行时间
      */
+
+
     public void updateCurrentTime(){
         //TODO 把显示系统时间改成骑行的时间
         Date now = new Date();
@@ -145,11 +158,20 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     }
 
     /**
-     * 更新租用界面
-     */
+     *  更新租用界面
+      */
+
+
     private void updateHireUi(){
 
         if((hireMsg=getIntent().getStringExtra("msg") )!= null){
+            baiduMap.clear();
+            hirebtn.setVisibility(View.GONE);
+            hireFinish.setVisibility(View.VISIBLE);
+            totalDistance = 0;
+            totalPrice = 0;
+            lastPrice = 1;
+            routePointList = new ArrayList<RoutePoint>();
             ll2.setVisibility(View.GONE);
             ll3.setVisibility(View.GONE);
             bikingL1.setVisibility(View.VISIBLE);
@@ -166,24 +188,32 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             hireFinish.setVisibility(View.VISIBLE);
             hireLayout.setVisibility(View.VISIBLE);
             baiduMap.setOnMapClickListener(null);
+
             //setAddress(new LatLng(locLatitude,locLongtitude));
             //Log.e("Adress----",loccity+locLatitude+"*"+locLongtitude);
- /*           if(loccity != null&&loccity != ""){
+            if(loccity != null&&loccity != ""){
                 markerLocation.setText(loccity);
-            }*/
+            }
             //ll1.setVisibility(View.GONE);
             //ll2.setVisibility(View.GONE);
             //ll3.setVisibility(View.GONE);
             //final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss",Locale.CHINA);
-            currentTime = System.currentTimeMillis();
+            beginTime = System.currentTimeMillis();
             final Handler myHandler = new Handler(){
                 @Override
                 public void handleMessage(Message msg){
                     if (msg.what == 0x2333){
-                            bikingTime.setText(FormatHandler.timeMillisTotime(System.currentTimeMillis()-currentTime));
+                        bikingTime.setText(FormatHandler.timeMillisTotime((totalTime=System.currentTimeMillis()-beginTime)));
+                        totalPrice = (float) (Math.floor(totalTime/1000/60 / 30) * 0.5 + 0.5);
+                        if(totalPrice > lastPrice){
+                            bikingCost.setText("￥"+String .format("%.1f",totalPrice)+"元");
+                            lastPrice = totalPrice;
+                        }
                     }
                 }
             };
+
+
 
             timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -202,9 +232,13 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     /**
      * 初始化地图
      */
+
+
     private void initmap(){
+        userManager= BmobUserManager.getInstance(MainActivity.this);
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         hireMsg = null;
-        totalDistance = 0;
+        totalDistance = 0.0;
         bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.booking_bike_marker);
         bikingL1 = (LinearLayout)findViewById(R.id.hire_linear1);
@@ -212,6 +246,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         bikingCost = (TextView)findViewById(R.id.biking_cost);
         bikingTime = (TextView)findViewById(R.id.biking_time);
         bikingDistance = (TextView)findViewById(R.id.biking_distance);
+        bikingDistance.setText("0.0米");
         ll2 = (LinearLayout)findViewById(R.id.linearLayout2);
         ll3 = (LinearLayout)findViewById(R.id.linearLayout3);
         ll1 = (LinearLayout)findViewById(R.id.linearLayout);
@@ -231,6 +266,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         baiduMap.setMyLocationEnabled(true);
         baiduMap.setBuildingsEnabled(true);
         baiduMap.setMaxAndMinZoomLevel(3,21);
+        location();
         walkingRouteOverlay = new WalkingRouteOverlay(baiduMap);
         mLocMode = LocationMode.NORMAL;
 
@@ -240,10 +276,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
         locationService.start();
-
-
-
-
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
@@ -316,11 +348,16 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     /**
      * 点击定位按钮进行定位
      */
+
+
     private void location(){
+
         locbtn.setOnClickListener(this);
         hirebtn.setOnClickListener(this);
 
     }
+
+
 
     private void setAddress(LatLng latLng){
         GeoCoder geoCoder = GeoCoder.newInstance();
@@ -344,10 +381,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     }
 
 
-
     /**
-     * 定位监听器
-     */
+     *  定位监听器
+      */
+
+
     public class MyLocationListenner implements BDLocationListener {
 
         private String lastFloor = null;
@@ -358,36 +396,50 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             }
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
-                    .direction(100).latitude(location.getLatitude())
+                    .direction(mCurrentX).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
+            //Log.e("定位方向改变-----",mCurrentX+"");
             baiduMap.setMyLocationData(locData);
             locLatitude = location.getLatitude();
             locLongtitude = location.getLongitude();
+            //Log.e("hireMsg",(hireMsg==null)?"null":hireMsg);
+            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
             if(hireMsg != null&&!hireMsg .equals("")){
                 setAddress(new LatLng(locLatitude,locLongtitude));
                 markerLocation.setText(loccity);
                 ll1.setVisibility(View.VISIBLE);
-  /*              final BmobGeoPoint myLoc = (BmobGeoPoint) getIntent().getSerializableExtra("loc");
+                RoutePoint routePoint = new RoutePoint();
+                routePoint.setRouteLat(locLatitude);
+                routePoint.setRouteLng(locLongtitude);
 
-                final Handler disHandler = new Handler(){
-                    @Override
-                    public void handleMessage(Message msg){
-                        if (msg.what == 0x1234){
-                            long distance = (long)(DistanceUtil.getDistance(new LatLng(myLoc.getLatitude(),myLoc.getLongitude()),new LatLng(locLatitude,locLongtitude))+0.5);
-                            bikingDistance.setText(FormatHandler.formatDistance(distance));
+                if(routePointList == null){
+                    routePointList = new ArrayList<RoutePoint>();
+                    routePointList.add(routePoint);
+                }else if(routePointList.size() == 0){
+                    routePointList.add(routePoint);
+                }else {
+                    RoutePoint lastPoint = routePointList.get(routePointList.size()-1);
+                    if(lastPoint.getRouteLat() !=locLatitude||lastPoint.getRouteLng()!=locLongtitude){
+                        LatLng lastLng = new LatLng(lastPoint.getRouteLat(),lastPoint.getRouteLng());
+                        LatLng currentLng = new LatLng(locLatitude,locLongtitude);
+                        double distantce = getDistance(lastLng, currentLng);
+                        Log.e("距离--------",distantce+"米");
+                        if(distantce > 0.1){
+                            routePointList.add(routePoint);
+
+                            totalDistance += distantce;
+                        }
+                        if(totalDistance>0){
+                            bikingDistance.setText(FormatHandler.formatDistance(totalDistance));
                         }
                     }
-                };
+                }
 
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        disHandler.sendEmptyMessage(0x1234);
-                    }
-                },0,1000);*/
+
 
             }
+
+
             if(isFirstLoc){
 
                 isFirstLoc = false;
@@ -412,10 +464,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     }
 
 
-
     /**
-     * 查询单车信息并在地图上显示单车
-     */
+     *  查询单车信息并在地图上显示单车
+      */
+
+
     private void queryBikeList(){
         BmobQuery<BikeInfo> query = new BmobQuery<>();
         query.setLimit(1000);
@@ -430,7 +483,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 for(BikeInfo info:list){
 
                     LatLng point = new LatLng(info.getLocation().getLatitude(),info.getLocation().getLongitude());
-                    MarkerOptions  option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
+                    MarkerOptions option = new MarkerOptions().position(point).icon(bitmap).zIndex(0).period(10);
                     option.animateType(MarkerOptions.MarkerAnimateType.grow);
                     markerList.add(option);
                     //baiduMap.addOverlay(option);
@@ -446,10 +499,11 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             }
         });
     }
+     /**
+      *
+      *  步行路径导航
+      */
 
-    /**
-     * 步行路径导航
-     */
     @Override
     public void onGetWalkingRouteResult(WalkingRouteResult result) {
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
@@ -493,7 +547,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
 
     public void onClick(View v){
-        BmobUserManager userManager = null;
+
         switch (v.getId()){
             case R.id.loc_btn:
                 MapStatus.Builder builder = new MapStatus.Builder();
@@ -510,6 +564,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                     case COMPASS://处于罗盘模式
                         mLocMode = LocationMode.NORMAL;
                         locbtn.setImageResource(R.drawable.location0);
+
                         baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                                 mLocMode,true,mCurrentMarker
                         ));
@@ -525,18 +580,16 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 }
                 break;
             case R.id.hirebtn:
-                userManager= BmobUserManager.getInstance(MainActivity.this);
+
                 if(userManager.getCurrentUser() != null){
                     Intent intent = new Intent(MainActivity.this, HireActivity.class);
                     intent.putExtra("bikeInfo",bikeInfo);
                     startActivity(intent);
-/*                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                             LocationMode.NORMAL,true,null
                     ));
-                    baiduMap.clear();
-                    hirebtn.setVisibility(View.GONE);
-                    hireFinish.setVisibility(View.VISIBLE);
-                    baiduMap.setOnMapClickListener(null);*/
+
+                    baiduMap.setOnMapClickListener(null);
 
                 }else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -563,6 +616,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                     }
                 });
                 queryBikeList();
+                uploadRouteInfo();
                 break;
 
             case R.id.slide_btn:
@@ -592,26 +646,33 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     @Override
     protected void onResume() {
         super.onResume();
+        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),SensorManager.SENSOR_DELAY_UI);
         //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-
+//        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE),SensorManager.SENSOR_DELAY_UI);
         mapView.onResume();
     }
 
     @Override
     protected void onPause() {
+        sensorManager.unregisterListener(this);
         super.onPause();
         mapView.onPause();
     }
 
     @Override
+    protected void onStop(){
+        sensorManager.unregisterListener(this);
+        super.onStop();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-        Log.d("demeiyan", "MainActivity------------onStart------------------");
+        //Log.d("demeiyan", "MainActivity------------onStart------------------");
     }
 
     @Override
     protected void onRestart(){
-        Log.d("demeiyan", "MainActivity------------onRestart------------------");
         super.onRestart();
         baiduMap.setMyLocationEnabled(true);
         locationService.start();
@@ -636,4 +697,38 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         return super.onKeyDown(keyCode,event);
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+            mCurrentX = event.values[SensorManager.DATA_X];
+        }
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    public void uploadRouteInfo(){
+        BikeInfo bikeInfo = (BikeInfo) getIntent().getSerializableExtra("bikeInfo");
+        RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setBikeId(bikeInfo.getObjectId());
+        routeInfo.setUser(userManager.getCurrentUser(User.class));
+        routeInfo.setRouteList(routePointList);
+        routeInfo.setBikingCost(bikingCost.getText().toString());
+        routeInfo.setBikingTime(bikingTime.getText().toString());
+        routeInfo.save(this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.e("routeSuccess","----");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.e("routeFailure","----"+i+s);
+            }
+        });
+
+
+    }
 }

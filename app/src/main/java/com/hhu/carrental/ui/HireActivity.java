@@ -142,7 +142,7 @@ public class HireActivity extends Activity implements View.OnClickListener ,Gest
                 });
                 Intent intent = new Intent(HireActivity.this, MainActivity.class);
                 intent.putExtra("msg","hire");
-                intent.putExtra("loc",bikeInfo.getLocation());
+                intent.putExtra("bikeInfo",bikeInfo);
                 startActivity(intent);
                 finish();
                 //MainActivity.finish();

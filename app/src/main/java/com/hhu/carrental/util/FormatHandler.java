@@ -21,14 +21,12 @@ public class FormatHandler {
         return hour+":"+min+":"+seconds;
     }
 
-    public static String formatDistance(long dis){
-        String res;
-        String km = String.valueOf(dis/1000);
-        String meters = String.valueOf(dis-(dis/1000)*1000);
-        if(dis/1000>0){
-            return km+"km"+meters+"m";
+    public static String formatDistance(double dis){
+
+        if((int)(dis/1000)>0){
+            return String.format("%.1f",dis/1000)+"km";
         }else{
-            return meters+"m";
+            return String.format("%.1f",dis)+"m";
         }
     }
 
