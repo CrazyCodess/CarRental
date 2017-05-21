@@ -1,16 +1,34 @@
 package com.hhu.carrental.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hhu.carrental.R;
+import com.hhu.carrental.bean.User;
+import com.hhu.carrental.util.StatusBarUtils;
 
-public class UserSettingActivity extends Activity implements GestureDetector.OnGestureListener{
+import cn.bmob.im.BmobUserManager;
+import cn.bmob.v3.listener.UpdateListener;
+
+public class UserSettingActivity extends Activity implements GestureDetector.OnGestureListener,View.OnClickListener{
 
     private GestureDetector detector;
     private final int FLIP_DISTANCE = 50;
+    private ImageButton back;
+    private RelativeLayout layoutSex;
+    private TextView showSex,showNick,showEmail,showPhone;
+    private BmobUserManager userManager;
+    private User user;
     @Override
     public boolean onTouchEvent(MotionEvent event){
         return detector.onTouchEvent(event);
@@ -52,11 +70,74 @@ public class UserSettingActivity extends Activity implements GestureDetector.OnG
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         setContentView(R.layout.activity_user_setting);
+        userManager = BmobUserManager.getInstance(this);
         initView();
     }
 
     private void initView(){
+        user = userManager.getCurrentUser(User.class);
         detector = new GestureDetector(this,this);
+        showNick = (TextView)findViewById(R.id.nick_name);
+        back = (ImageButton)findViewById(R.id.user_setting_back);
+        layoutSex = (RelativeLayout)findViewById(R.id.layout_sex);
+        showSex = (TextView)findViewById(R.id.show_sex);
+        showEmail = (TextView)findViewById(R.id.show_email);
+        showPhone = (TextView)findViewById(R.id.show_phone);
+        showNick.setText(user.getUsername());
+        showSex.setText(user.getSex()?"男":"女");
+        showEmail.setText(user.getEmailVerified()?"已验证":"未验证");
+        layoutSex.setOnClickListener(this);
+        showPhone.setText((user.getMobilePhoneNumber()==""||user.getMobilePhoneNumber()==null)?"未填写":user.getMobilePhoneNumber());
+        back.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.user_setting_back:
+                finish();
+                break;
+            case R.id.layout_sex:
+                updateSex();
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void updateSex(){
+        new  AlertDialog.Builder(this)
+
+                .setSingleChoiceItems(new  String[] {"男", "女" },  0 ,
+                        new  DialogInterface.OnClickListener() {
+
+                            public   void  onClick(DialogInterface dialog,  int  which) {
+                                //dialog.
+
+                                user.setSex(which==0);
+                                user.update(UserSettingActivity.this,new UpdateListener(){
+                                    @Override
+                                    public void onSuccess(){
+                                        Toast.makeText(UserSettingActivity.this,"设置成功",Toast.LENGTH_SHORT).show();
+                                        showSex.setText(user.getSex()?"男":"女");
+                                    }
+
+                                    @Override
+                                    public void onFailure(int i, String s) {
+                                        Toast.makeText(UserSettingActivity.this,"设置失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                dialog.dismiss();
+                            }
+                        }
+                )
+               // .setNegativeButton("取消" ,  null )
+                .show();
+
+
     }
 }

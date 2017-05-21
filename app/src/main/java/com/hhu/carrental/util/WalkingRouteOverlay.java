@@ -15,6 +15,7 @@ import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
+import com.hhu.carrental.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class WalkingRouteOverlay extends OverlayManager {
                         points.add(lastStepLastPoint);
                     }
                     points.addAll(watPoints);
-                    overlayList.add(new PolylineOptions().points(points).width(10)
+                    overlayList.add(new PolylineOptions().points(points).width(15)
                             .color(getLineColor() != 0 ? getLineColor() : Color.argb(178, 0, 78, 255)).zIndex(0));
                     lastStepLastPoint = watPoints.get(watPoints.size() - 1);
                 }
@@ -124,10 +125,12 @@ public class WalkingRouteOverlay extends OverlayManager {
      * @return 起点图标
      */
     public BitmapDescriptor getStartMarker() {
-        return null;
+        return BitmapDescriptorFactory
+                .fromResource(R.mipmap.start);
     }
     public int getLineColor() {
         return 0;
+        //return R.color.color_route_line;
     }
     /**
      * 覆写此方法以改变默认终点图标
@@ -135,7 +138,8 @@ public class WalkingRouteOverlay extends OverlayManager {
      * @return 终点图标
      */
     public BitmapDescriptor getTerminalMarker() {
-        return null;
+        return BitmapDescriptorFactory
+                .fromResource(R.mipmap.end);
     }
 
     /**

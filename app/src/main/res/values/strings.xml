@@ -59,4 +59,6 @@
     <string name="get_back_pass">找回密码</string>
     <string name="forget_hint">请填写您注册所用邮箱，我们将为您的邮箱发送一封修改密码的邮件!</string>
     <string name="confirm">确定</string>
+    <string name="sex">性别</string>
+    <string name="user_phone">手机号</string>
 </resources>

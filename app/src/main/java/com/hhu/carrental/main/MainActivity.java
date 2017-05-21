@@ -179,7 +179,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
 
 //            Handler handler = new TimeHandler(this);
 //            handler.sendEmptyMessageDelayed(1,500);
-            Log.e("hire","返回返回");
+          // Log.e("hire","返回返回");
             baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                     LocationMode.NORMAL,true,mCurrentMarker
             ));
@@ -386,7 +386,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
       */
 
 
-    public class MyLocationListenner implements BDLocationListener {
+    private class MyLocationListenner implements BDLocationListener {
 
         private String lastFloor = null;
         @Override
