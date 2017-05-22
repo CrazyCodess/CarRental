@@ -85,6 +85,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
+import static com.baidu.location.h.g.R;
 import static com.baidu.mapapi.utils.DistanceUtil.getDistance;
 
 
@@ -467,8 +468,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     /**
      *  查询单车信息并在地图上显示单车
       */
-
-
     private void queryBikeList(){
         BmobQuery<BikeInfo> query = new BmobQuery<>();
         query.setLimit(1000);
@@ -491,7 +490,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 baiduMap.addOverlays(markerList);
 
             }
-
             @Override
             public void onError(int i, String s) {
                 Log.e("错误错误",i+s);
@@ -503,7 +501,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
       *
       *  步行路径导航
       */
-
     @Override
     public void onGetWalkingRouteResult(WalkingRouteResult result) {
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
@@ -622,7 +619,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             case R.id.slide_btn:
 
                 userManager = BmobUserManager.getInstance(MainActivity.this);
-                if(userManager.getCurrentUser() != null){
+                if(userManager.getCurrentUser(User.class) != null){
                     startActivity(new Intent(MainActivity.this,UserInfoActivity.class));
                 }else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));

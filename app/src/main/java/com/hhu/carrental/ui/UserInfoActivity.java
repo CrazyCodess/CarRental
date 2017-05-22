@@ -145,9 +145,6 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
     }
 
     private void rentAmoutBike(){
-
-
-
         double random0=0.0,random1 = 0.0;
         double varlon,varlat;
         for(int i =0;i<30;i++){
@@ -157,34 +154,28 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
             random1 = Double.parseDouble(String .format("%.6f",random1));
             varlon = longitude;
             varlat = latitude;
-            Log.e("随机数：","random0:"+random0+"random1:"+random1+"longitude:"+longitude+"latitude:"+latitude);
             switch(i%10){
                 case 1:
                 case 2:
                 case 3:
                     varlon = varlon-random0;
                     varlat = varlat-random1;
-                    //location = new BmobGeoPoint(longitude-random0,latitude-random1);
                     break;
                 case 4:
                 case 5:
                     varlon = varlon+random0;
                     varlat = varlat-random1;
-                    //location = new BmobGeoPoint(longitude+random0,latitude-random1);
                     break;
                 case 7:
                 case 8:
                     varlon = varlon-random0;
                     varlat = varlat+random1;
-                    //location = new BmobGeoPoint(longitude-random0,latitude+random1);
                     break;
                 default:
                     varlon = varlon+random0;
                     varlat = varlat+random1;
-                    //location = new BmobGeoPoint(longitude+random0,latitude+random1);
                     break;
             }
-            Log.e("坐标","varlon:"+varlon+"varlat:"+varlat);
             if(varlon >100&&varlat>10){
                 newlocation = new BmobGeoPoint(varlon,varlat);
                 //bikeInfo = new BikeInfo("123456",newlocation,user,"110","山地车","我是一辆单车","20170506");
@@ -201,11 +192,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
                     }
                 });
             }
-
         }
-
-
-
     }
 
 

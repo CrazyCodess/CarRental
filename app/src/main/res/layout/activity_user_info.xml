@@ -44,7 +44,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="224dp"
-            android:background="@drawable/userinfoback"
+            android:background="@drawable/user_profile"
             android:orientation="vertical"
             android:layout_weight="0.99">
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:src="@drawable/avator"
+                android:src="@drawable/avatar_default_login"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
@@ -122,7 +122,7 @@
 
             />
 
-        <RelativeLayout
+       <!-- <RelativeLayout
             android:id="@+id/layout_rent_amoutbike"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             android:layout_width="match_parent"
             android:background="@color/color_line"
 
-            />
+            />-->
 
 
         <RelativeLayout
