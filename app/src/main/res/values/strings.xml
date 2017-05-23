@@ -40,7 +40,7 @@
     <string name="bike_phone">联系方式</string>
     <string name="bike_pass">锁密码</string>
     <string name="bike_detail">单车描述</string>
-    <string name="hire_sure">确认租用</string>
+    <string name="hire_sure">骑行</string>
     <string name="hire_finish">结束骑行</string>
     <string name="user_setting">设置</string>
     <string name="hire_cost">预计费用</string>
@@ -57,8 +57,10 @@
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="forget_password">忘记密码</string>
     <string name="get_back_pass">找回密码</string>
+
     <string name="forget_hint">请填写您注册所用邮箱，我们将为您的邮箱发送一封修改密码的邮件!</string>
     <string name="confirm">确定</string>
+    <string name="save">保存</string>
     <string name="sex">性别</string>
     <string name="user_phone">手机号</string>
 </resources>

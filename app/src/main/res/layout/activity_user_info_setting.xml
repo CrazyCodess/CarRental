@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
-            android:id="@+id/forget_pass_back"
+            android:id="@+id/user_info_setting_back"
             android:layout_centerVertical="true"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -21,23 +21,23 @@
 
             />
         <TextView
-            android:id="@+id/title_bar_name"
+            android:id="@+id/user_info_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:layout_centerInParent="true"
-            android:text="@string/get_back_pass"
+            android:text="@string/nick_name"
             android:textColor="@color/base_color_text_white"
             android:textSize="16sp" />
 
 
         <TextView
-            android:id="@+id/btn_sure"
+            android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/confirm"
+            android:text="@string/save"
             android:layout_alignParentRight="true"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="12sp"
@@ -59,46 +59,47 @@
             android:gravity="center_vertical" >
 
             <EditText
-                android:id="@+id/et_resetpassword_email"
+                android:id="@+id/reset_nick"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/base_action_bar_height"
                 android:background="@drawable/base_edit_input"
-                android:drawableLeft="@mipmap/reset_pass_email"
+                android:drawableLeft="@mipmap/acount"
                 android:drawablePadding="25dp"
-                android:hint="@string/email"
                 android:paddingLeft="15dp"
                 android:paddingRight="0dp"
                 android:textColorHint="#ffdddddd"
                 android:textSize="@dimen/text_size_large"
                 />
+            <EditText
+                android:id="@+id/reset_phone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/base_action_bar_height"
+                android:background="@drawable/base_edit_input"
+                android:drawableLeft="@mipmap/ico_phone"
+                android:drawablePadding="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="0dp"
+                android:ellipsize="middle"
+                android:inputType="phone"
+                android:maxEms="7"
+                android:textColorHint="#ffdddddd"
+                android:visibility="gone"
+                android:textSize="@dimen/text_size_large"
+                />
 
             <ImageView
-                android:id="@+id/clear_text"
+                android:id="@+id/clear_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:clickable="true"
                 android:src="@mipmap/clear_text"
-                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentRight="true"
 
                 />
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/forget_hint"
-                android:textSize="15sp" />
-        </LinearLayout>
 
     </LinearLayout>
 

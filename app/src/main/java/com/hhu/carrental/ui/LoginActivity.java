@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.User;
 import com.hhu.carrental.main.MainActivity;
+import com.hhu.carrental.util.CheckNetwork;
 import com.hhu.carrental.util.StatusBarUtils;
 
 import cn.bmob.im.BmobUserManager;
@@ -190,8 +191,15 @@ public class LoginActivity extends Activity  implements View.OnClickListener ,Ge
 
                         @Override
                         public void onFailure(int i, String s) {
+
                             mpd.setMessage("登录失败,请输入正确的用户名和密码");
                             mpd.dismiss();
+                            if(!CheckNetwork.isNetworkAvailable(LoginActivity.this)){
+                                Toast.makeText(LoginActivity.this, "当前网络不可用，请检查您的网络", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(LoginActivity.this,"用户名或密码不正确",Toast.LENGTH_LONG).show();
+                            }
+
                         }
                     });
                 }

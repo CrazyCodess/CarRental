@@ -85,7 +85,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
-import static com.baidu.location.h.g.R;
 import static com.baidu.mapapi.utils.DistanceUtil.getDistance;
 
 
@@ -131,14 +130,12 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
     private float mCurrentX;
     private SensorManager sensorManager;
     private ArrayList<RoutePoint> routePointList;
-//    private MyOrientationListener myOrientationListener;
-//    private PlanNode end = new PlanNode();
-    //private MK
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-       StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.color_title);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         initmap();//初始化百度地图
@@ -178,9 +175,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             bikingL1.setVisibility(View.VISIBLE);
             bikingL2.setVisibility(View.VISIBLE);
 
-//            Handler handler = new TimeHandler(this);
-//            handler.sendEmptyMessageDelayed(1,500);
-          // Log.e("hire","返回返回");
+
             baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                     LocationMode.NORMAL,true,mCurrentMarker
             ));
@@ -195,10 +190,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             if(loccity != null&&loccity != ""){
                 markerLocation.setText(loccity);
             }
-            //ll1.setVisibility(View.GONE);
-            //ll2.setVisibility(View.GONE);
-            //ll3.setVisibility(View.GONE);
-            //final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss",Locale.CHINA);
+
             beginTime = System.currentTimeMillis();
             final Handler myHandler = new Handler(){
                 @Override
@@ -302,7 +294,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                                 bikeInfo = list.get(0);
                                 //Log.e("BikeInfo:",bikeInfo.toString());
                             }else{
-                                Log.e("smile", "查询成功，无数据返回");
+                                Log.e("msg", "查询成功，无数据返回");
                             }
                         }else{
                             //Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
@@ -404,7 +396,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             locLatitude = location.getLatitude();
             locLongtitude = location.getLongitude();
             //Log.e("hireMsg",(hireMsg==null)?"null":hireMsg);
-            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
+//            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
             if(hireMsg != null&&!hireMsg .equals("")){
                 setAddress(new LatLng(locLatitude,locLongtitude));
                 markerLocation.setText(loccity);
@@ -424,7 +416,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                         LatLng lastLng = new LatLng(lastPoint.getRouteLat(),lastPoint.getRouteLng());
                         LatLng currentLng = new LatLng(locLatitude,locLongtitude);
                         double distantce = getDistance(lastLng, currentLng);
-                        Log.e("距离--------",distantce+"米");
+//                        Log.e("距离--------",distantce+"米");
                         if(distantce > 0.1){
                             routePointList.add(routePoint);
 

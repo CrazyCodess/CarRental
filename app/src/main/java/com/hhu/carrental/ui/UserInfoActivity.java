@@ -256,6 +256,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
     @Override
     protected void onResume() {
         super.onResume();
+        nametv.setText(user.getUsername());
+
+
     }
     @Override
     protected void onPause() {

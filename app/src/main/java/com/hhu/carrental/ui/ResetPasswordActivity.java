@@ -142,7 +142,6 @@ public class ResetPasswordActivity extends Activity implements View.OnClickListe
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
