@@ -50,6 +50,8 @@
     <string name="biking_cost">预计费用</string>
     <string name="biking_distance">骑行路程</string>
     <string name="biking_time">骑行时间</string>
+    <string name="trip_time">骑行时间: </string>
+    <string name="trip_cost">骑行花费: </string>
     <string name="user_info">个人中心</string>
     <string name="user_setting_info">个人信息</string>
     <string name="avator">头像</string>
@@ -63,4 +65,5 @@
     <string name="save">保存</string>
     <string name="sex">性别</string>
     <string name="user_phone">手机号</string>
+    <string name="bikeNo">自行车编号: </string>
 </resources>

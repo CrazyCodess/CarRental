@@ -396,7 +396,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             locLatitude = location.getLatitude();
             locLongtitude = location.getLongitude();
             //Log.e("hireMsg",(hireMsg==null)?"null":hireMsg);
-//            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
+            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
             if(hireMsg != null&&!hireMsg .equals("")){
                 setAddress(new LatLng(locLatitude,locLongtitude));
                 markerLocation.setText(loccity);
@@ -416,7 +416,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                         LatLng lastLng = new LatLng(lastPoint.getRouteLat(),lastPoint.getRouteLng());
                         LatLng currentLng = new LatLng(locLatitude,locLongtitude);
                         double distantce = getDistance(lastLng, currentLng);
-//                        Log.e("距离--------",distantce+"米");
+                        Log.e("距离--------",distantce+"米");
                         if(distantce > 0.1){
                             routePointList.add(routePoint);
 
