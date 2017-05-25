@@ -132,7 +132,6 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
             case R.id.about_me:
                 startActivity(new Intent(this,AboutMeActivity.class));
                 locationService.stop();
-                finish();
                 break;
             case R.id.userinfo_back:
                 finish();

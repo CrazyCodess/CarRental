@@ -63,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/text_white">
+        android:background="@color/text_white"
+        android:layout_marginTop="50dp">
 
         <View  android:layout_height="1px"
             android:layout_width="match_parent"
@@ -85,10 +86,11 @@
                 android:layout_centerVertical="true"
                 android:text="@string/contract_type"
                 android:drawableLeft="@mipmap/ico_phone"
-
+                android:drawablePadding="5dp"
                 android:textSize="@dimen/trip_small"/>
 
             <TextView
+                android:id="@+id/my_call"
                 style="@style/Smile.TextView._Black"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -115,10 +117,12 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/eemail"
+                android:drawablePadding="5dp"
                 android:drawableLeft="@mipmap/reset_pass_email"
                 android:textSize="@dimen/trip_small"/>
 
             <TextView
+                android:id="@+id/my_email"
                 style="@style/Smile.TextView._Black"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -146,9 +150,11 @@
                 android:layout_centerVertical="true"
                 android:text="@string/station"
                 android:drawableLeft="@mipmap/link"
+                android:drawablePadding="5dp"
                 android:textSize="@dimen/trip_small"/>
 
             <TextView
+                android:id="@+id/my_link"
                 style="@style/Smile.TextView._Black"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

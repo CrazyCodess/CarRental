@@ -62,7 +62,7 @@
     <string name="trip_time">骑行时间: </string>
     <string name="trip_cost">骑行花费: </string>
     <string name="user_info">个人中心</string>
-    <string name="user_setting_info">个人信息</string>
+    <string name="user_setting_info">设置</string>
     <string name="avator">头像</string>
     <string name="nick_name">昵称</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
@@ -80,7 +80,7 @@
     <string name="app_type">v1.0.0</string>
     <string name="my_email">demeiyan199305@gmail.com</string>
     <string name="my_call">18351962086</string>
-    <string name="my_link">https://demeeiyan.github.io/about/</string>
+    <string name="my_link">https://demeiyan.github.io/about/</string>
     <string name="contract_type">联系电话</string>
     <string name="eemail">电子邮箱</string>
     <string name="station">官方网站</string>
