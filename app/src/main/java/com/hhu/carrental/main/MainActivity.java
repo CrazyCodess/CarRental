@@ -233,7 +233,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         hireMsg = null;
         totalDistance = 0.0;
         bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.booking_bike_marker);
+                .fromResource(R.mipmap.stable_cluster_marker_one_normal);
         bikingL1 = (LinearLayout)findViewById(R.id.hire_linear1);
         bikingL2 = (LinearLayout)findViewById(R.id.hire_linear2);
         bikingCost = (TextView)findViewById(R.id.biking_cost);
@@ -706,6 +706,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
         routeInfo.setRouteList(routePointList);
         routeInfo.setBikingCost(bikingCost.getText().toString());
         routeInfo.setBikingTime(bikingTime.getText().toString());
+        routeInfo.setBikingDistance(bikingDistance.getText().toString());
         routeInfo.save(this, new SaveListener() {
             @Override
             public void onSuccess() {

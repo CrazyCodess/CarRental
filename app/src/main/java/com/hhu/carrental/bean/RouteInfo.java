@@ -13,6 +13,7 @@ public class RouteInfo extends BmobObject {
     private String bikeId;
     private String bikingCost;
     private String bikingTime;
+    private String bikingDistance;
     //private String bikingDate;
     private User user;
     ArrayList<RoutePoint> routeList;
@@ -58,5 +59,13 @@ public class RouteInfo extends BmobObject {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getBikingDistance() {
+        return bikingDistance;
+    }
+
+    public void setBikingDistance(String bikingDistance) {
+        this.bikingDistance = bikingDistance;
     }
 }

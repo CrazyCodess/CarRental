@@ -34,7 +34,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/bike_rental"
+        android:icon="@drawable/appico"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <service
@@ -73,7 +73,10 @@
         <activity
             android:name=".ui.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password" />
-        <activity android:name=".ui.UserInfoSettingActivity"></activity>
+        <activity android:name=".ui.UserInfoSettingActivity" />
+        <activity android:name=".ui.TripListActivity" />
+        <activity android:name=".ui.RouteDetailActivity" />
+        <activity android:name=".ui.AboutMeActivity"></activity>
     </application>
 
 </manifest>

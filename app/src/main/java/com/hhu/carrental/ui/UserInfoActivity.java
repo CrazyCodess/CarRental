@@ -36,7 +36,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
     private BmobUserManager userManager;
     private TextView nametv;
     private Button logout;
-    private RelativeLayout rentOut,rentAmount,userSetting;
+    private RelativeLayout rentOut,rentAmount,userSetting,trip;
     private double latitude;
     private double longitude;
     private User user;
@@ -98,6 +98,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
     private void initView(){
         detector = new GestureDetector(this,this);
         nametv = (TextView) findViewById(R.id.username);
+        trip = (RelativeLayout)findViewById(R.id.trip);
         logout = (Button) findViewById(R.id.btn_logout);
         userSetting = (RelativeLayout)findViewById(R.id.user_setting);
         back = (ImageButton) findViewById(R.id.userinfo_back);
@@ -107,13 +108,14 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
         logout.setOnClickListener(this);
         rentOut.setOnClickListener(this);
 
-        rentAmount = (RelativeLayout)findViewById(R.id.layout_rent_amoutbike);
+        rentAmount = (RelativeLayout)findViewById(R.id.about_me);
         rentAmount.setOnClickListener(this);
         back.setOnClickListener(this);
         userSetting.setOnClickListener(this);
         BDLocationListener myListenter = new MyLocationListenner();
         locationService = new LocationService(getApplicationContext());
         locationService.registerListener(myListenter);
+        trip.setOnClickListener(this);
         locationService.start();
     }
 
@@ -127,9 +129,8 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
             case R.id.layout_rent_bike:
                 startActivity(new Intent(this,RentOutActivity.class));
                 break;
-            case R.id.layout_rent_amoutbike:
-                rentAmoutBike();
-                startActivity(new Intent(this,MainActivity.class));
+            case R.id.about_me:
+                startActivity(new Intent(this,AboutMeActivity.class));
                 locationService.stop();
                 finish();
                 break;
@@ -139,6 +140,8 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
             case R.id.user_setting:
                 startActivity(new Intent(this,UserSettingActivity.class));
                 break;
+            case R.id.trip:
+                startActivity(new Intent(this,TripListActivity.class));
             default:
                 break;
         }

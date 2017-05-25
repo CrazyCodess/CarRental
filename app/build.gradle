@@ -41,6 +41,7 @@ dependencies {
     compile files('libs/BmobSDK_V3.4.3_0820.jar')
     compile files('libs/okhttp-2.4.0.jar')
     compile files('libs/okio-1.4.0.jar')
+    compile project(path: ':library')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.2.1'

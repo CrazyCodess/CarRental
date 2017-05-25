@@ -1,6 +1,7 @@
 package com.hhu.carrental.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,19 +11,20 @@ import android.widget.TextView;
 
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.RouteInfo;
+import com.hhu.carrental.ui.RouteDetailActivity;
 
 import java.util.ArrayList;
 
 /**
- * Created by demeiyan on 2017/5/24 01:48.
+ * 我的行程列表的Adapter
+ * Created by demeiyan on 2017/5/24 16:03.
  */
 
-public class MyTripListAdapter extends BaseAdapter implements View.OnClickListener{
-
+public class TripListAdapter extends BaseAdapter implements View.OnClickListener{
     private RouteInfo routeInfo;
     private Context context;
     private ArrayList<RouteInfo> routeInfoList;
-    public MyTripListAdapter(Context context,ArrayList<RouteInfo> list) {
+    public TripListAdapter(Context context,ArrayList<RouteInfo> list) {
         this.context = context;
         this.routeInfoList = list;
     }
@@ -63,7 +65,12 @@ public class MyTripListAdapter extends BaseAdapter implements View.OnClickListen
             holder = (ViewHolder) convertView.getTag();
         }
         routeInfo = (RouteInfo)getItem(position);
-        //TODO　
+        holder.tripfinishTime.setText(routeInfo.getCreatedAt().substring(0,16));
+        holder.tripTime.setText(Integer.parseInt(routeInfo.getBikingTime().substring(3,5))+"分钟");
+        holder.tripCost.setText(routeInfo.getBikingCost().substring(1));
+        holder.bikeNo.setText(routeInfo.getBikeId());
+        holder.layoutTrip.setOnClickListener(this);
+
         return convertView;
     }
 
@@ -71,6 +78,7 @@ public class MyTripListAdapter extends BaseAdapter implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layout_trip:
+                context.startActivity(new Intent(context, RouteDetailActivity.class).putExtra("routeInfo",routeInfo));
                 break;
             default:
                 break;
