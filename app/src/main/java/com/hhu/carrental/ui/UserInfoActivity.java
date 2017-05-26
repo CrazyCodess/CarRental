@@ -146,6 +146,9 @@ public class UserInfoActivity extends Activity implements View.OnClickListener ,
         }
     }
 
+    /**
+     * 系统随机生成批量单车信息
+     */
     private void rentAmoutBike(){
         double random0=0.0,random1 = 0.0;
         double varlon,varlat;

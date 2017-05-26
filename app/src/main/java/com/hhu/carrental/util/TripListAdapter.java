@@ -1,7 +1,6 @@
 package com.hhu.carrental.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.hhu.carrental.R;
 import com.hhu.carrental.bean.RouteInfo;
-import com.hhu.carrental.ui.RouteDetailActivity;
 
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ import java.util.ArrayList;
  * Created by demeiyan on 2017/5/24 16:03.
  */
 
-public class TripListAdapter extends BaseAdapter implements View.OnClickListener{
+public class TripListAdapter extends BaseAdapter {
     private RouteInfo routeInfo;
     private Context context;
     private ArrayList<RouteInfo> routeInfoList;
@@ -69,12 +67,12 @@ public class TripListAdapter extends BaseAdapter implements View.OnClickListener
         holder.tripTime.setText(Integer.parseInt(routeInfo.getBikingTime().substring(3,5))+"分钟");
         holder.tripCost.setText(routeInfo.getBikingCost().substring(1));
         holder.bikeNo.setText(routeInfo.getBikeId());
-        holder.layoutTrip.setOnClickListener(this);
+//        holder.layoutTrip.setOnClickListener(this);
 
         return convertView;
     }
 
-    @Override
+/*    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layout_trip:
@@ -83,5 +81,5 @@ public class TripListAdapter extends BaseAdapter implements View.OnClickListener
             default:
                 break;
         }
-    }
+    }*/
 }

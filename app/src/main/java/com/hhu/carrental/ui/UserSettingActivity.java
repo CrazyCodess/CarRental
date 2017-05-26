@@ -22,7 +22,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
- * 个人信息
+ * 设置用户的相关信息
  */
 public class UserSettingActivity extends Activity implements GestureDetector.OnGestureListener,View.OnClickListener{
 

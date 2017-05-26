@@ -1,10 +1,12 @@
 package com.hhu.carrental.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ public class TripListActivity extends Activity implements View.OnClickListener{
     ArrayList<RouteInfo> tripList = new ArrayList<>();
     private TripListAdapter tripListAdapter;
     private ImageButton tripBack;
+    private RouteInfo routeInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +110,13 @@ public class TripListActivity extends Activity implements View.OnClickListener{
         tripListAdapter = new TripListAdapter(this,tripList);
         listView.setAdapter(tripListAdapter);
         listView.setDividerHeight(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                routeInfo = (RouteInfo) parent.getItemAtPosition(position);
+                startActivity(new Intent(TripListActivity.this, RouteDetailActivity.class).putExtra("routeInfo",routeInfo));
+            }
+        });
     }
 
     static final int STATE_REFRESH = 0;//进行刷新

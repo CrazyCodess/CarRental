@@ -45,11 +45,17 @@ public class RouteDetailActivity extends Activity implements View.OnClickListene
     }
 
     private void initView(){
+
         intent = getIntent();
         routeInfo = (RouteInfo)intent.getSerializableExtra("routeInfo");
         routePoints = routeInfo.getRouteList();
         mapView = (MapView)findViewById(R.id.route_detail_mapView);
         routeBaiduMap = mapView.getMap();
+        routeBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+        routeBaiduMap.setTrafficEnabled(false);
+        routeBaiduMap.setIndoorEnable(true);
+        routeBaiduMap.setBuildingsEnabled(true);
+        routeBaiduMap.setMaxAndMinZoomLevel(3,21);
         mapView.showZoomControls(false);
         startBmp = BitmapDescriptorFactory.fromResource(R.mipmap.start);
         endBmp = BitmapDescriptorFactory.fromResource(R.mipmap.end);

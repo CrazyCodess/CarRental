@@ -206,8 +206,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                 }
             };
 
-
-
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -297,7 +295,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                                 Log.e("msg", "查询成功，无数据返回");
                             }
                         }else{
-                            //Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
+                            Log.e("smile", "错误码："+e.getErrorCode()+"，错误描述："+e.getMessage());
                             //Log.e("异常:",Log.getStackTraceString(e));
                             //e.printStackTrace();
                         }
@@ -343,13 +341,13 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
      */
 
 
+
     private void location(){
 
         locbtn.setOnClickListener(this);
         hirebtn.setOnClickListener(this);
 
     }
-
 
 
     private void setAddress(LatLng latLng){
@@ -396,7 +394,7 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
             locLatitude = location.getLatitude();
             locLongtitude = location.getLongitude();
             //Log.e("hireMsg",(hireMsg==null)?"null":hireMsg);
-            Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
+            //Log.e("大小大小0000",(routePointList==null)?"null":routePointList.size()+"");
             if(hireMsg != null&&!hireMsg .equals("")){
                 setAddress(new LatLng(locLatitude,locLongtitude));
                 markerLocation.setText(loccity);
@@ -427,9 +425,6 @@ public class MainActivity extends Activity implements View.OnClickListener,OnGet
                         }
                     }
                 }
-
-
-
             }
 
 

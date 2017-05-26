@@ -1,7 +1,6 @@
 package com.hhu.carrental.util;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -48,7 +47,7 @@ public class WalkingRouteOverlay extends OverlayManager {
         }
 
         List<OverlayOptions> overlayList = new ArrayList<OverlayOptions>();
-        if (mRouteLine.getAllStep() != null
+ /*       if (mRouteLine.getAllStep() != null
                 && mRouteLine.getAllStep().size() > 0) {
             for (WalkingRouteLine.WalkingStep step : mRouteLine.getAllStep()) {
                 Bundle b = new Bundle();
@@ -76,7 +75,7 @@ public class WalkingRouteOverlay extends OverlayManager {
 
                 }
             }
-        }
+        }*/
         // starting
         if (mRouteLine.getStarting() != null) {
             overlayList.add((new MarkerOptions())
@@ -129,7 +128,7 @@ public class WalkingRouteOverlay extends OverlayManager {
                 .fromResource(R.mipmap.start);
     }
     public int getLineColor() {
-        return 0;
+        return 0xff3AB0FC;
         //return R.color.color_route_line;
     }
     /**

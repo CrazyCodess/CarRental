@@ -13,4 +13,5 @@
     <color name="color_line">#f2e9e9</color>
     <color name="text_blue">#cc0000</color>
     <color name="color_route_line">#b23566d4</color>
+    <color name="test">#ff3AB0FC</color>
 </resources>
