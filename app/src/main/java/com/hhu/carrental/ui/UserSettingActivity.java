@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +30,7 @@ public class UserSettingActivity extends Activity implements GestureDetector.OnG
     private GestureDetector detector;
     private final int FLIP_DISTANCE = 50;
     private ImageButton back;
-    private RelativeLayout layoutSex,layoutNick,layoutPhone;
+    private RelativeLayout layoutSex,layoutNick,layoutPhone,layoutHead;
     private TextView showSex,showNick,showEmail,showPhone;
     private BmobUserManager userManager;
     private User user;
@@ -87,6 +88,7 @@ public class UserSettingActivity extends Activity implements GestureDetector.OnG
         showNick = (TextView)findViewById(R.id.nick_name);
         layoutNick = (RelativeLayout)findViewById(R.id.layout_nick);
         layoutPhone = (RelativeLayout)findViewById(R.id.layout_phone);
+        layoutHead = (RelativeLayout)findViewById(R.id.layout_head);
         back = (ImageButton)findViewById(R.id.user_setting_back);
         layoutSex = (RelativeLayout)findViewById(R.id.layout_sex);
         showSex = (TextView)findViewById(R.id.show_sex);
@@ -99,6 +101,7 @@ public class UserSettingActivity extends Activity implements GestureDetector.OnG
         showPhone.setText((user.getMobilePhoneNumber().equals("")||user.getMobilePhoneNumber()==null)?"未填写":user.getMobilePhoneNumber());
         back.setOnClickListener(this);
         layoutPhone.setOnClickListener(this);
+        layoutHead.setOnClickListener(this);
         layoutNick.setOnClickListener(this);
     }
 
@@ -122,6 +125,12 @@ public class UserSettingActivity extends Activity implements GestureDetector.OnG
                 intent.putExtra("content",user.getMobilePhoneNumber());
                 startActivity(intent);
                 break;
+            case R.id.layout_head:
+                Intent intent1 = new Intent(Intent.ACTION_PICK, null);
+                //intent1.setAction(Intent.ACTION_PICK);
+                intent1.setDataAndType(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivity(intent1);
             default:
                 break;
         }
