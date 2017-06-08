@@ -12,7 +12,15 @@ android {
         versionName "1.0"
     }
 
-
+    signingConfigs {
+        release {//发布版本的签名配置
+//            storeFile file('C:/Users/Admin/.android/android.keystore')
+            storeFile file('F:/codes/github/Template/key.jks')
+            keyAlias 'key0'
+            storePassword '123456'
+            keyPassword '123456'
+        }
+    }
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
@@ -21,13 +29,22 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/MANIFEST.MF'
     }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
+        release.setRoot('build-types/release')
     }
 }
 

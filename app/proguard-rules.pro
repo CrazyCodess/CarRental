@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn org.apache.http.**
+-dontwarn cn.bmob.im.**
+-dontwarn cn.bmob.v3.**
+-dontwarn com.baidu.**
+-dontwarn com.handmark.**
+-dontwarn okio.**
+-dontwarn android.webkit.WebView
+-dontwarn android.net.http.**
